@@ -74,30 +74,30 @@ class ExcuseRepository(private val context: Context) {
             "signal: searching...",
             "beep. boop. thinking.",
             "// excuse.render()",
-            "nothing to show yet.",
+            "nothing to show yet...",
             "glyphs assembling...",
-            "dot matrix active.",
-            "glyph interface busy."
+            "dot matrix active!",
+            "glyph interface busy..."
         )
 
         private val SAMSUNG_LOADING = listOf(
             "asking Bixby nicely...",
             "Galaxy AI generating...",
-            "SmartThings: working",
-            "One UI loading excuse",
+            "SmartThings: working...",
+            "One UI loading excuse...",
             "connecting to Galaxy...",
-            "DeX: excuse incoming",
-            "free RAM: 2.4KB"
+            "DeX: excuse incoming...",
+            "Refreshed. Free RAM: 2.4KB!"
         )
 
         private val ONEPLUS_LOADING = listOf(
-            "Never Settle... hold on",
+            "Never Settle... hold on!",
             "Warp charging excuse...",
-            "OxygenOS processing",
+            "OxygenOS AI processing...",
             "Alert Slider: maybe?",
-            "flagship loading™",
-            "pro mode: thinking",
-            "OnePlus never delays... usually"
+            "Flagship loading...™",
+            "Pro mode: thinking...",
+            "OnePlus never delays... usually..."
         )
 
         private val MATERIAL_LOADING = listOf(
@@ -105,9 +105,9 @@ class ExcuseRepository(private val context: Context) {
             "dynamic color: active",
             "ripple effect running",
             "applying elevation...",
-            "Material You: thinking",
+            "Material You: thinking...",
             "following guidelines...",
-            "themed refusal coming"
+            "themed refusal coming..."
         )
 
         /**
