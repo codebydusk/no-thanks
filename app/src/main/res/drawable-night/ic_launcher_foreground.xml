@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Night-mode foreground — same evenOdd circle+holes design.
-  Uses a brighter circle fill (#E5F0FF = Digital Blue 50) on the deeper
-  #001433 background for even stronger contrast in dark mode.
+  Adaptive icon foreground — night mode.
+  Same prohibition sign, brighter badge (#E5F0FF) + deeper slash/ring (#000E24)
+  for maximum contrast against the near-black #000E24 background.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -10,16 +10,28 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
+    <!-- Badge circle (brighter in dark mode) -->
     <path
         android:fillColor="#E5F0FF"
+        android:pathData="M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z"/>
+
+    <!-- Prohibition ring -->
+    <path
+        android:fillColor="#000E24"
         android:fillType="evenOdd"
         android:pathData="
-            M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z
-            M31,32 H38 V76 H31 Z
-            M38,32 H44 L51,76 H45 Z
-            M45,32 H53 V76 H45 Z
-            M57,32 H77 V76 H57 Z
-            M63,38 H71 V70 H63 Z
+            M54,22 A32,32 0 0 1 54,86 A32,32 0 0 1 54,22 Z
+            M54,34 A20,20 0 0 1 54,74 A20,20 0 0 1 54,34 Z
         "/>
+
+    <!-- Diagonal slash -->
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:rotation="45">
+        <path
+            android:fillColor="#000E24"
+            android:pathData="M49,20 H59 V88 H49 Z"/>
+    </group>
 
 </vector>

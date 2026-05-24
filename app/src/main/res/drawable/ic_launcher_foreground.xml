@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Adaptive icon foreground — redesigned from scratch.
+  Adaptive icon foreground — prohibition sign (🚫) design.
 
-  CONCEPT: A filled light-blue circle. The letters "N" and "O" are transparent
-  "holes" punched through the circle using evenOdd fill. The background layer
-  (dark navy) shows through the holes, creating crisp dark letters on a light badge.
+  CONCEPT: A light-blue badge circle. On top: a dark navy "no-entry" ring (thick
+  donut) with a diagonal slash bar — universally recognisable as "NO" without any
+  text. The symbol is drawn in solid navy so it pops on the navy background.
 
-  Letter safe-zone: all paths sit within a radius of ~32dp from center (54,54),
-  comfortably inside the Android 66dp safe zone (33dp radius). The badge circle
-  itself has radius 36 — it will be visible through any launcher mask shape.
+  All content is within ~35dp of centre (54,54), safely inside every launcher
+  mask shape (Android safe zone = 33dp radius from centre).
 
-  Works on BOTH light (#0052CC) and dark (#001433) background layers with no
-  night-mode variant needed: the circle is always light, the holes always dark.
+  Ring: outer r=32, inner r=20, stroke=12dp (bold, legible at small sizes)
+  Slash: 10dp wide bar, rotated 45° clockwise (upper-left → lower-right direction)
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -19,30 +18,28 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!--
-      Single evenOdd path:
-        Subpath 1 — badge circle (radius 36, centre 54,54)
-        Subpath 2 — N left bar       (hole)
-        Subpath 3 — N diagonal       (hole)
-        Subpath 4 — N right bar      (hole)
-        Subpath 5 — O outer rect     (hole — the ring area)
-        Subpath 6 — O inner rect     (counter-hole — restores fill inside O)
-
-      Result:
-        • Circle is filled with #CCE0FF
-        • N bar shapes and O ring area are transparent (background shows through)
-        • O centre is filled (same light colour as circle)
-    -->
+    <!-- 1. Light-blue badge circle (radius 36, the "border" of the badge) -->
     <path
         android:fillColor="#CCE0FF"
+        android:pathData="M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z"/>
+
+    <!-- 2. Navy prohibition ring: evenOdd donut (outer r=32, inner r=20) -->
+    <path
+        android:fillColor="#002966"
         android:fillType="evenOdd"
         android:pathData="
-            M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z
-            M31,32 H38 V76 H31 Z
-            M38,32 H44 L51,76 H45 Z
-            M45,32 H53 V76 H45 Z
-            M57,32 H77 V76 H57 Z
-            M63,38 H71 V70 H63 Z
+            M54,22 A32,32 0 0 1 54,86 A32,32 0 0 1 54,22 Z
+            M54,34 A20,20 0 0 1 54,74 A20,20 0 0 1 54,34 Z
         "/>
+
+    <!-- 3. Navy diagonal slash bar (10dp wide, 68dp tall, rotated 45° clockwise) -->
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:rotation="45">
+        <path
+            android:fillColor="#002966"
+            android:pathData="M49,20 H59 V88 H49 Z"/>
+    </group>
 
 </vector>

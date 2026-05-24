@@ -67,8 +67,9 @@ class NoThanksWidget : GlanceAppWidget() {
             val currentText = state[CURRENT_TEXT_KEY] ?: "Tap ↻ to fetch"
             val isCopied  = state[IS_COPIED_KEY]  ?: false
             val isLoading = state[IS_LOADING_KEY] ?: false
+            val copiedMsg = state[COPIED_MSG_KEY]  ?: "Clipboard hijacked. You're welcome."
 
-            val theme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_MATERIAL)
+            val theme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_NOTHANKS)
             val cornerStyle by repository.cornerStyleFlow.collectAsState(initial = ExcuseRepository.CORNER_ROUND)
             val darkModeSetting by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)
             val copyMechanism by repository.copyMechanismFlow.collectAsState(initial = ExcuseRepository.COPY_TAP)
@@ -78,9 +79,9 @@ class NoThanksWidget : GlanceAppWidget() {
             val size = LocalSize.current
 
             WidgetContent(
-                // Prepend "No, thanks!" only to real API text — not loading quips or "Copied!"
+                // Prepend "No, thanks!" only to real API text — not loading quips or copy confirmations
                 text = when {
-                    isCopied  -> "Copied!"
+                    isCopied  -> copiedMsg
                     isLoading -> currentText
                     else      -> "No, thanks! $currentText"
                 },

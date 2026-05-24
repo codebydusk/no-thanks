@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Settings page logo — self-contained flat VectorDrawable.
-  Same circle-badge+evenOdd design as the adaptive icon.
+  Settings page flat logo — same prohibition sign design, self-contained.
   Background: rounded square in Digital Blue 800 (#002966)
-  Badge: Digital Blue 100 (#CCE0FF) with NO holes punched through
+  Badge: Digital Blue 100 (#CCE0FF) circle
+  Symbol: prohibition ring + slash in navy (#002966)
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -16,17 +16,28 @@
         android:fillColor="#FF002966"
         android:pathData="M18,0 H90 Q108,0 108,18 V90 Q108,108 90,108 H18 Q0,108 0,90 V18 Q0,0 18,0 Z"/>
 
-    <!-- Circle badge with NO punch-through holes -->
+    <!-- Light badge circle -->
     <path
         android:fillColor="#CCE0FF"
+        android:pathData="M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z"/>
+
+    <!-- Prohibition ring -->
+    <path
+        android:fillColor="#002966"
         android:fillType="evenOdd"
         android:pathData="
-            M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z
-            M31,32 H38 V76 H31 Z
-            M38,32 H44 L51,76 H45 Z
-            M45,32 H53 V76 H45 Z
-            M57,32 H77 V76 H57 Z
-            M63,38 H71 V70 H63 Z
+            M54,22 A32,32 0 0 1 54,86 A32,32 0 0 1 54,22 Z
+            M54,34 A20,20 0 0 1 54,74 A20,20 0 0 1 54,34 Z
         "/>
+
+    <!-- Diagonal slash -->
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:rotation="45">
+        <path
+            android:fillColor="#002966"
+            android:pathData="M49,20 H59 V88 H49 Z"/>
+    </group>
 
 </vector>

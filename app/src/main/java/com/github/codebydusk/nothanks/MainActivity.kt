@@ -132,7 +132,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
         item {
             SettingsSection(title = "Widget Theme") {
                 val themeOptions = listOf(
-                    ExcuseRepository.THEME_NOTHANKS to "No, thanks!",
+                    ExcuseRepository.THEME_NOTHANKS to "Blueprint",
                     ExcuseRepository.THEME_MATERIAL to "Material",
                     ExcuseRepository.THEME_NOTHING to "Nothing OS",
                     ExcuseRepository.THEME_SAMSUNG to "Samsung",

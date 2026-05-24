@@ -1,4 +1,4 @@
-# No, thanks! (beep... boop... thinking...)
+# No, thanks!
 
 A minimal Android home screen widget that serves you random excuses to gracefully say "no" — powered by the [No as a Service](https://github.com/hotheadhacker/no-as-a-service) API.
 
@@ -7,20 +7,21 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 ### Widget
 
 - **Switchable 4×2 / 4×1 layout** — resizes automatically based on the space you give it
-- **Flat two-color design** — foreground and background only, no visual noise
-- **Scrollable text** in 4×2 mode for longer excuses
+- **"No, thanks!" prefix** automatically prepended to every excuse
+- **Scrollable text** in 4×2 mode for longer excuses; up to 3 lines in 4×1 mode
 - **Refresh button** (↻) to fetch a new excuse from the API
-- **Previous button** (←) to browse through your last 10 excuses
+- **Previous button** (←) to browse through your last 10 excuses (toggle-able in settings)
 - **Tap to copy** or **dedicated copy button** — configurable in settings
-- **"Copied!" feedback** shown for 2 seconds after copying
+- **Hilarious copy confirmation** shown for 2 seconds after copying (randomly chosen from 10 messages)
+- **Theme-matched loading messages** — funny quips while the API is being called (no boring spinner)
 - **Sarcastic fallback messages** when the API is unreachable
 
 ### Settings App
 
 - **Appearance** — System / Light / Dark mode
-- **Widget Theme** — Material, Nothing OS, or Samsung One UI style
-- **Corner Style** — Round or Square
-- **Copy Mechanism** — Tap text or show a copy button
+- **Widget Theme** — Blueprint, Material, Nothing OS, Samsung One UI, OnePlus
+- **Corner Style** — Pill / Rounded / Sharp
+- **Copy Mechanism** — Tap text or show a dedicated copy button
 - **Navigation** — Toggle the previous (←) button on/off
 
 ## Screenshots
@@ -47,7 +48,7 @@ app/src/main/java/com/github/codebydusk/nothanks/
 ├── MainActivity.kt                  # Settings screen (Jetpack Compose)
 ├── data/
 │   ├── ExcuseApi.kt                 # Retrofit API interface
-│   └── ExcuseRepository.kt          # Data layer — API calls, history, settings
+│   └── ExcuseRepository.kt          # Data layer — API calls, history, settings, message banks
 ├── widget/
 │   ├── NoThanksWidget.kt            # Glance widget UI & theming
 │   ├── NoThanksWidgetReceiver.kt    # GlanceAppWidgetReceiver
@@ -103,11 +104,21 @@ Response:
 
 ## Widget Themes
 
-| Theme | Dark | Light |
+| Theme | Style | Dark Mode | Light Mode |
+| --- | --- | --- | --- |
+| **Blueprint** *(default)* | Digital Blue palette | Near-black (#000E24) bg, sky-blue (#CCE0FF) text, vivid blue (#3385FF) accent | Light blue (#E5F0FF) bg, deep navy (#002966) text, brand blue (#0052CC) accent |
+| **Material** | MD3 standard | Dark surface (#1C1B1F), light text | Light surface (#FFFBFE), dark text |
+| **Nothing OS** | Monospace, dot-matrix | Pure black, white text, **red** (#D71921) refresh | Pure white, black text, red refresh |
+| **Samsung One UI** | Rounded sans-serif | Warm dark (#1A1A1A), warm light text, blue accent | Warm light (#F7F7F7), dark text, Samsung blue accent |
+| **OnePlus** | Clean OxygenOS | Near-black (#0F0F0F), light text, **red** (#F6000D) refresh | Near-white (#FAFAFA), dark text, red refresh |
+
+## Corner Styles
+
+| Style | Radius | Look |
 | --- | --- | --- |
-| **Nothing OS** | Black bg, Nothing red (#D71921) text, bold font | White bg, black text, bold font |
-| **Samsung One UI** | Warm dark (#1A1A1A), warm light text | Warm light (#F7F7F7), dark text |
-| **Material** | Standard surface (#1C1B1F) | Standard surface (#FFFBFE) |
+| **Pill** | 50dp | Fully rounded pill shape |
+| **Rounded** | 8dp | Gentle Samsung-style corners |
+| **Sharp** | 0dp | True square, no rounding |
 
 ## Credits
 

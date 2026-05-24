@@ -45,7 +45,7 @@ class ExcuseRepository(private val context: Context) {
         const val THEME_SAMSUNG = "SAMSUNG"
         const val THEME_MATERIAL = "MATERIAL"
         const val THEME_ONEPLUS = "ONEPLUS"
-        const val THEME_NOTHANKS = "NOTHANKS"  // App's own branded Digital Blue theme
+        const val THEME_NOTHANKS = "NOTHANKS"  // Branded "Blueprint" Digital Blue theme
 
         // Corner style values
         const val CORNER_ROUND = "ROUND"
@@ -67,6 +67,22 @@ class ExcuseRepository(private val context: Context) {
             "Looks like we need an excuse for not having excuses.",
             "Our server said 'No, thanks!' to your request."
         )
+
+        // Hilarious messages shown when text is copied to clipboard
+        val COPIED_MESSAGES = listOf(
+            "That's a copy, Houston. 📋",
+            "Snagged! Use it wisely.",
+            "Ctrl+C executed. Godspeed.",
+            "In your clipboard. No refunds.",
+            "Excuse extracted with prejudice.",
+            "Pasted into your soul. 🌀",
+            "That excuse is now legally yours.",
+            "Copy secured. Mission complete.",
+            "Yours now. Don't abuse it.",
+            "Clipboard hijacked. You're welcome."
+        )
+
+        fun getRandomCopiedMessage(): String = COPIED_MESSAGES[Random.nextInt(COPIED_MESSAGES.size)]
 
         // Theme-specific hilarious loading messages
         private val NOTHING_LOADING = listOf(
