@@ -1,43 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Foreground layer for the adaptive icon (light mode).
+  Layout (viewport 108×108, safe zone x=16–92, y=15–93):
+    "NO"     → y=15–57  (42dp tall, bold block letters, Digital Blue 50  #E5F0FF)
+    "THANKS" → y=63–82  (19dp tall, thin block letters, Digital Blue 200 #99C2FF)
+  Both sets span the full x=16–92 width.
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Subtle inner border (matches SVG's #F38BA8 at 15% opacity) -->
-    <path
-        android:pathData="M28,10 L80,10 Q98,10 98,28 L98,80 Q98,98 80,98 L28,98 Q10,98 10,80 L10,28 Q10,10 28,10 Z"
-        android:strokeColor="#F38BA8"
-        android:strokeWidth="1"
-        android:strokeAlpha="0.15"
-        android:fillColor="#00000000"/>
+    <!-- ═══ "NO" — Digital Blue 50 (#E5F0FF) ═══ -->
 
-    <!-- Letter N -->
-    <path
-        android:fillColor="#F38BA8"
-        android:pathData="M22,34 L31,34 L41,52 L41,34 L50,34 L50,66 L41,66 L31,48 L31,66 L22,66 Z"/>
+    <!-- N: left bar (x=16–22), diagonal parallelogram (top x=22–28 → bottom x=47–53), right bar (x=47–53) -->
+    <path android:fillColor="#E5F0FF"
+        android:pathData="M16,15 H22 V57 H16 Z"/>
+    <path android:fillColor="#E5F0FF"
+        android:pathData="M22,15 H28 L53,57 H47 Z"/>
+    <path android:fillColor="#E5F0FF"
+        android:pathData="M47,15 H53 V57 H47 Z"/>
 
-    <!-- Letter O (evenOdd for the counter hole) -->
-    <path
-        android:fillColor="#F38BA8"
+    <!-- O: evenOdd ring (outer 57–92 × 15–57, inner 62–87 × 21–51) -->
+    <path android:fillColor="#E5F0FF"
         android:fillType="evenOdd"
-        android:pathData="M64,34 L78,34 Q86,34 86,42 L86,58 Q86,66 78,66 L64,66 Q56,66 56,58 L56,42 Q56,34 64,34 Z M67,43 Q64,43 64,46 L64,54 Q64,57 67,57 L75,57 Q78,57 78,54 L78,46 Q78,43 75,43 Z"/>
+        android:pathData="M57,15 H92 V57 H57 Z M62,21 H87 V51 H62 Z"/>
 
-    <!-- Comma -->
-    <path
-        android:fillColor="#CDD6F4"
-        android:pathData="M34,72 L35.5,72 L35.5,74.5 L34.5,76 L33,76 L34,74.5 Z"/>
+    <!-- ═══ "THANKS" — Digital Blue 200 (#99C2FF) ═══ -->
+    <!-- 6 letters × 11dp + 5 gaps × 2dp = 76dp total (x=16–92) -->
 
-    <!-- Text line representing ", thanks!" -->
-    <path
-        android:fillColor="#CDD6F4"
-        android:fillAlpha="0.6"
-        android:pathData="M38,72.5 L68,72.5 L68,74.5 L38,74.5 Z"/>
+    <!-- T (x=16–27): full-width top bar + centred stem -->
+    <path android:fillColor="#99C2FF"
+        android:pathData="M16,63 H27 V65 H22.5 V82 H20.5 V65 H16 Z"/>
 
-    <!-- Blinking cursor (static in icon) -->
-    <path
-        android:fillColor="#F38BA8"
-        android:pathData="M71,71 L73.5,71 L73.5,76 L71,76 Z"/>
+    <!-- H (x=29–40): left bar, right bar, crossbar -->
+    <path android:fillColor="#99C2FF"
+        android:pathData="M29,63 H31 V72 H38 V63 H40 V82 H38 V74 H31 V82 H29 Z"/>
+
+    <!-- A (x=42–53): two angled legs sharing apex + crossbar -->
+    <path android:fillColor="#99C2FF"
+        android:pathData="M46.5,63 H48.5 L44,82 H42 Z"/>
+    <path android:fillColor="#99C2FF"
+        android:pathData="M46.5,63 H48.5 L53,82 H51 Z"/>
+    <path android:fillColor="#99C2FF"
+        android:pathData="M43.5,76 H52 V78 H43.5 Z"/>
+
+    <!-- N (x=55–66): left bar, diagonal parallelogram, right bar -->
+    <path android:fillColor="#99C2FF"
+        android:pathData="M55,63 H57 V82 H55 Z"/>
+    <path android:fillColor="#99C2FF"
+        android:pathData="M57,63 H59 L64,82 H62 Z"/>
+    <path android:fillColor="#99C2FF"
+        android:pathData="M64,63 H66 V82 H64 Z"/>
+
+    <!-- K (x=68–79): left bar + combined V-arm shape -->
+    <path android:fillColor="#99C2FF"
+        android:pathData="M68,63 H70 V82 H68 Z"/>
+    <path android:fillColor="#99C2FF"
+        android:pathData="M70,72.5 L75.5,63 H78 L72.5,72.5 L78,82 H75.5 Z"/>
+
+    <!-- S (x=81–92): five rect segments forming the S curve -->
+    <path android:fillColor="#99C2FF"
+        android:pathData="M81,63 H92 V65 H81 Z M81,65 H83 V71 H81 Z M81,71 H92 V73 H81 Z M90,73 H92 V79 H90 Z M81,79 H92 V82 H81 Z"/>
 
 </vector>

@@ -27,7 +27,7 @@ class ExcuseRepository(private val context: Context) {
     companion object {
         private val HISTORY_KEY = stringPreferencesKey("history")
         private val CURRENT_INDEX_KEY = intPreferencesKey("current_index")
-        
+
         // Settings keys
         val DARK_MODE_KEY = stringPreferencesKey("dark_mode_v2")
         val THEME_KEY = stringPreferencesKey("theme")
@@ -44,10 +44,12 @@ class ExcuseRepository(private val context: Context) {
         const val THEME_NOTHING = "NOTHING"
         const val THEME_SAMSUNG = "SAMSUNG"
         const val THEME_MATERIAL = "MATERIAL"
+        const val THEME_ONEPLUS = "ONEPLUS"
 
         // Corner style values
         const val CORNER_ROUND = "ROUND"
         const val CORNER_SQUARE = "SQUARE"
+        const val CORNER_SHARP = "SHARP"
 
         // Copy mechanism values
         const val COPY_TAP = "TAP"
@@ -64,6 +66,61 @@ class ExcuseRepository(private val context: Context) {
             "Looks like we need an excuse for not having excuses.",
             "Our server said 'No, thanks!' to your request."
         )
+
+        // Theme-specific hilarious loading messages
+        private val NOTHING_LOADING = listOf(
+            "● ● ● loading ● ● ●",
+            "signal: searching...",
+            "beep. boop. thinking.",
+            "// excuse.render()",
+            "nothing to show yet.",
+            "glyphs assembling...",
+            "dot matrix active.",
+            "glyph interface busy."
+        )
+
+        private val SAMSUNG_LOADING = listOf(
+            "asking Bixby nicely...",
+            "Galaxy AI generating...",
+            "SmartThings: working",
+            "One UI loading excuse",
+            "connecting to Galaxy...",
+            "DeX: excuse incoming",
+            "free RAM: 2.4KB"
+        )
+
+        private val ONEPLUS_LOADING = listOf(
+            "Never Settle... hold on",
+            "Warp charging excuse...",
+            "OxygenOS processing",
+            "Alert Slider: maybe?",
+            "flagship loading™",
+            "pro mode: thinking",
+            "OnePlus never delays... usually"
+        )
+
+        private val MATERIAL_LOADING = listOf(
+            "consulting MD3...",
+            "dynamic color: active",
+            "ripple effect running",
+            "applying elevation...",
+            "Material You: thinking",
+            "following guidelines...",
+            "themed refusal coming"
+        )
+
+        /**
+         * Returns a random hilarious loading message appropriate for the given theme.
+         */
+        fun getRandomLoadingMessage(theme: String): String {
+            val messages = when (theme) {
+                THEME_NOTHING -> NOTHING_LOADING
+                THEME_SAMSUNG -> SAMSUNG_LOADING
+                THEME_ONEPLUS -> ONEPLUS_LOADING
+                else -> MATERIAL_LOADING
+            }
+            return messages[Random.nextInt(messages.size)]
+        }
     }
 
     suspend fun getNextExcuse(): String {
@@ -78,17 +135,21 @@ class ExcuseRepository(private val context: Context) {
         }
     }
 
+    /** Reads the currently saved theme setting (used by widget actions). */
+    suspend fun getThemeSetting(): String =
+        context.dataStore.data.first()[THEME_KEY] ?: THEME_MATERIAL
+
     private suspend fun addToHistory(reason: String) {
         context.dataStore.edit { preferences ->
             val historyJson = preferences[HISTORY_KEY] ?: "[]"
             val type = object : TypeToken<MutableList<String>>() {}.type
             val history: MutableList<String> = gson.fromJson(historyJson, type)
-            
+
             history.add(reason)
             if (history.size > 10) {
                 history.removeAt(0)
             }
-            
+
             preferences[HISTORY_KEY] = gson.toJson(history)
             preferences[CURRENT_INDEX_KEY] = history.size - 1
         }
@@ -101,7 +162,7 @@ class ExcuseRepository(private val context: Context) {
             val type = object : TypeToken<List<String>>() {}.type
             val history: List<String> = gson.fromJson(historyJson, type)
             val currentIndex = preferences[CURRENT_INDEX_KEY] ?: -1
-            
+
             if (currentIndex > 0) {
                 val newIndex = currentIndex - 1
                 preferences[CURRENT_INDEX_KEY] = newIndex
@@ -120,7 +181,7 @@ class ExcuseRepository(private val context: Context) {
             val type = object : TypeToken<List<String>>() {}.type
             val history: List<String> = gson.fromJson(historyJson, type)
             val currentIndex = preferences[CURRENT_INDEX_KEY] ?: -1
-            
+
             if (currentIndex < history.size - 1 && currentIndex != -1) {
                 val newIndex = currentIndex + 1
                 preferences[CURRENT_INDEX_KEY] = newIndex
@@ -136,7 +197,7 @@ class ExcuseRepository(private val context: Context) {
         val type = object : TypeToken<List<String>>() {}.type
         val history: List<String> = gson.fromJson(historyJson, type)
         val currentIndex = preferences[CURRENT_INDEX_KEY] ?: -1
-        
+
         return if (currentIndex in history.indices) {
             history[currentIndex]
         } else {

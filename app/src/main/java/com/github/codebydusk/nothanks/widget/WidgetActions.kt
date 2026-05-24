@@ -18,7 +18,16 @@ val CURRENT_TEXT_KEY = stringPreferencesKey("current_text")
 class RefreshAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val repository = ExcuseRepository(context)
-        // Always fetch a new excuse from API
+        val theme = repository.getThemeSetting()
+
+        // Show a hilarious theme-appropriate loading message immediately
+        val loadingMsg = ExcuseRepository.getRandomLoadingMessage(theme)
+        updateAppWidgetState(context, glanceId) { prefs ->
+            prefs[CURRENT_TEXT_KEY] = loadingMsg
+        }
+        NoThanksWidget().update(context, glanceId)
+
+        // Fetch new excuse from API, then replace the loading message
         val newText = repository.getNextExcuse()
         updateAppWidgetState(context, glanceId) { prefs ->
             prefs[CURRENT_TEXT_KEY] = newText
@@ -37,7 +46,7 @@ class HistoryAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val direction = parameters[DIRECTION_KEY] ?: return
         val repository = ExcuseRepository(context)
-        
+
         val newText = if (direction == PREVIOUS) {
             repository.getPreviousExcuse()
         } else {
@@ -55,19 +64,19 @@ class HistoryAction : ActionCallback {
 class CopyAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val repository = ExcuseRepository(context)
+        // Read from history, not widget state — avoids copying a loading message
         val text = repository.getCurrentExcuse() ?: return
-        
+
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("No, Thanks! Excuse", text)
         clipboard.setPrimaryClip(clip)
 
-        // Show "Copied!" feedback
+        // Show "Copied!" feedback for 2 seconds
         updateAppWidgetState(context, glanceId) { prefs ->
             prefs[IS_COPIED_KEY] = true
         }
         NoThanksWidget().update(context, glanceId)
 
-        // Revert after 2 seconds
         try {
             delay(2000)
             updateAppWidgetState(context, glanceId) { prefs ->
@@ -75,7 +84,7 @@ class CopyAction : ActionCallback {
             }
             NoThanksWidget().update(context, glanceId)
         } catch (_: Exception) {
-            // Widget may have been removed during the delay — ignore gracefully
+            // Widget may have been removed during delay — ignore gracefully
         }
     }
 }

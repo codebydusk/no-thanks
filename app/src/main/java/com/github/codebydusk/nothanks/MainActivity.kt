@@ -133,7 +133,8 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                 val themeOptions = listOf(
                     ExcuseRepository.THEME_MATERIAL to "Material",
                     ExcuseRepository.THEME_NOTHING to "Nothing OS",
-                    ExcuseRepository.THEME_SAMSUNG to "Samsung"
+                    ExcuseRepository.THEME_SAMSUNG to "Samsung",
+                    ExcuseRepository.THEME_ONEPLUS to "OnePlus"
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     themeOptions.forEach { (value, label) ->
@@ -157,8 +158,9 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
         item {
             SettingsSection(title = "Corner Style") {
                 val cornerOptions = listOf(
-                    ExcuseRepository.CORNER_ROUND to "Round",
-                    ExcuseRepository.CORNER_SQUARE to "Square"
+                    ExcuseRepository.CORNER_ROUND to "Pill  ◉",
+                    ExcuseRepository.CORNER_SQUARE to "Rounded  ▢",
+                    ExcuseRepository.CORNER_SHARP to "Sharp  ◼"
                 )
                 SegmentedOptions(
                     options = cornerOptions,
@@ -319,6 +321,9 @@ fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () 
         }
         ExcuseRepository.THEME_SAMSUNG -> {
             androidx.compose.ui.graphics.Color(0xFF1A1A1A) to androidx.compose.ui.graphics.Color(0xFFF7F7F7)
+        }
+        ExcuseRepository.THEME_ONEPLUS -> {
+            androidx.compose.ui.graphics.Color(0xFF0F0F0F) to androidx.compose.ui.graphics.Color(0xFFF6000D)
         }
         else -> {
             androidx.compose.ui.graphics.Color(0xFF1C1B1F) to androidx.compose.ui.graphics.Color(0xFFE6E1E5)
