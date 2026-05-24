@@ -26,6 +26,8 @@ import com.github.codebydusk.nothanks.R
 import com.github.codebydusk.nothanks.data.ExcuseRepository
 import androidx.compose.ui.graphics.Color as ComposeColor
 import androidx.glance.appwidget.state.getAppWidgetState
+import androidx.glance.appwidget.state.updateAppWidgetState
+import androidx.glance.currentState
 import androidx.datastore.preferences.core.Preferences
 
 class NoThanksWidget : GlanceAppWidget() {
@@ -44,16 +46,20 @@ class NoThanksWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val repository = ExcuseRepository(context)
         
-        // Fetch current state
-        var currentText = repository.getCurrentExcuse()
-        if (currentText == null) {
-            currentText = repository.getNextExcuse()
-        }
-
+        // Seed widget state on first load if no text is stored yet
         val prefs = getAppWidgetState<Preferences>(context, id)
-        val isCopied = prefs[IS_COPIED_KEY] ?: false
+        if (prefs[CURRENT_TEXT_KEY] == null) {
+            val initialText = repository.getCurrentExcuse() ?: repository.getNextExcuse()
+            updateAppWidgetState(context, id) { mutablePrefs ->
+                mutablePrefs[CURRENT_TEXT_KEY] = initialText
+            }
+        }
         
         provideContent {
+            val state = currentState<Preferences>()
+            val currentText = state[CURRENT_TEXT_KEY] ?: "Tap ↻ to fetch"
+            val isCopied = state[IS_COPIED_KEY] ?: false
+
             val theme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_MATERIAL)
             val cornerStyle by repository.cornerStyleFlow.collectAsState(initial = ExcuseRepository.CORNER_ROUND)
             val darkModeSetting by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)

@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
@@ -12,12 +13,16 @@ import com.github.codebydusk.nothanks.data.ExcuseRepository
 import kotlinx.coroutines.delay
 
 val IS_COPIED_KEY = booleanPreferencesKey("is_copied")
+val CURRENT_TEXT_KEY = stringPreferencesKey("current_text")
 
 class RefreshAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val repository = ExcuseRepository(context)
         // Always fetch a new excuse from API
-        repository.getNextExcuse()
+        val newText = repository.getNextExcuse()
+        updateAppWidgetState(context, glanceId) { prefs ->
+            prefs[CURRENT_TEXT_KEY] = newText
+        }
         NoThanksWidget().update(context, glanceId)
     }
 }
@@ -33,10 +38,15 @@ class HistoryAction : ActionCallback {
         val direction = parameters[DIRECTION_KEY] ?: return
         val repository = ExcuseRepository(context)
         
-        if (direction == PREVIOUS) {
+        val newText = if (direction == PREVIOUS) {
             repository.getPreviousExcuse()
         } else {
             repository.getNextFromHistory()
+        }
+        if (newText != null) {
+            updateAppWidgetState(context, glanceId) { prefs ->
+                prefs[CURRENT_TEXT_KEY] = newText
+            }
         }
         NoThanksWidget().update(context, glanceId)
     }
