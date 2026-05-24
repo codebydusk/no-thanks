@@ -4,15 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.codebydusk.nothanks.data.ExcuseRepository
 import com.github.codebydusk.nothanks.ui.theme.NoThanksTheme
 import com.github.codebydusk.nothanks.widget.NoThanksWidget
@@ -30,7 +37,12 @@ class MainActivity : ComponentActivity() {
             NoThanksTheme {
                 Scaffold(
                     topBar = {
-                        CenterAlignedTopAppBar(title = { Text("No Thanks Settings") })
+                        CenterAlignedTopAppBar(
+                            title = { Text("No, Thanks!") },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            )
+                        )
                     }
                 ) { innerPadding ->
                     SettingsScreen(
@@ -49,124 +61,299 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
     
     val currentTheme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_MATERIAL)
     val currentCornerStyle by repository.cornerStyleFlow.collectAsState(initial = ExcuseRepository.CORNER_ROUND)
-    val currentDarkMode by repository.darkModeFlow.collectAsState(initial = null)
+    val currentDarkMode by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)
     val currentCopyMechanism by repository.copyMechanismFlow.collectAsState(initial = ExcuseRepository.COPY_TAP)
+    val showPrevButton by repository.showPrevButtonFlow.collectAsState(initial = true)
 
     val context = androidx.compose.ui.platform.LocalContext.current
 
     LazyColumn(
-        modifier = modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(vertical = 8.dp)
     ) {
+        // App header / tagline
         item {
-            Text("Dark Mode", style = MaterialTheme.typography.titleMedium)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                RadioButtonSetting("Auto", currentDarkMode == null) { 
-                    scope.launch { repository.updateSetting(ExcuseRepository.DARK_MODE_KEY, true); /* Wait, my updateSetting logic is a bit flawed for null */ } 
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "✕",
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Black,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Ever needed a graceful way to say no?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        textAlign = TextAlign.Center
+                    )
                 }
-                // I'll fix updateSetting to handle nullable if needed, but for now I'll just use 3 states.
             }
-            // Simplified Dark Mode toggle for now
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Force Dark Mode")
-                Switch(
-                    checked = currentDarkMode ?: false,
-                    onCheckedChange = { 
-                        scope.launch { 
-                            repository.updateSetting(ExcuseRepository.DARK_MODE_KEY, it)
+        }
+
+        // Dark Mode / Appearance section
+        item {
+            SettingsSection(title = "Appearance") {
+                val darkModeOptions = listOf(
+                    ExcuseRepository.DARK_MODE_SYSTEM to "System",
+                    ExcuseRepository.DARK_MODE_LIGHT to "Light",
+                    ExcuseRepository.DARK_MODE_DARK to "Dark"
+                )
+                SegmentedOptions(
+                    options = darkModeOptions,
+                    selectedValue = currentDarkMode,
+                    onSelect = { value ->
+                        scope.launch {
+                            repository.updateSetting(ExcuseRepository.DARK_MODE_KEY, value)
                             NoThanksWidget().updateAll(context)
-                        } 
+                        }
                     }
                 )
             }
         }
 
+        // Widget Theme section
         item {
-            Text("Widget Theme", style = MaterialTheme.typography.titleMedium)
-            Column {
-                listOf(
+            SettingsSection(title = "Widget Theme") {
+                val themeOptions = listOf(
                     ExcuseRepository.THEME_MATERIAL to "Material",
                     ExcuseRepository.THEME_NOTHING to "Nothing OS",
                     ExcuseRepository.THEME_SAMSUNG to "Samsung"
-                ).forEach { (value, label) ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth().selectable(
+                )
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    themeOptions.forEach { (value, label) ->
+                        ThemeOptionRow(
+                            label = label,
                             selected = currentTheme == value,
-                            onClick = { 
-                                scope.launch { 
+                            theme = value,
+                            onClick = {
+                                scope.launch {
                                     repository.updateSetting(ExcuseRepository.THEME_KEY, value)
                                     NoThanksWidget().updateAll(context)
-                                } 
+                                }
                             }
-                        ).padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(selected = currentTheme == value, onClick = null)
-                        Text(label, modifier = Modifier.padding(start = 8.dp))
+                        )
                     }
                 }
             }
         }
 
+        // Corner Style section
         item {
-            Text("Corner Style", style = MaterialTheme.typography.titleMedium)
-            Row {
-                RadioButtonSetting("Round", currentCornerStyle == ExcuseRepository.CORNER_ROUND) {
-                    scope.launch { 
-                        repository.updateSetting(ExcuseRepository.CORNER_STYLE_KEY, ExcuseRepository.CORNER_ROUND)
-                        NoThanksWidget().updateAll(context)
+            SettingsSection(title = "Corner Style") {
+                val cornerOptions = listOf(
+                    ExcuseRepository.CORNER_ROUND to "Round",
+                    ExcuseRepository.CORNER_SQUARE to "Square"
+                )
+                SegmentedOptions(
+                    options = cornerOptions,
+                    selectedValue = currentCornerStyle,
+                    onSelect = { value ->
+                        scope.launch {
+                            repository.updateSetting(ExcuseRepository.CORNER_STYLE_KEY, value)
+                            NoThanksWidget().updateAll(context)
+                        }
                     }
-                }
-                RadioButtonSetting("Square", currentCornerStyle == ExcuseRepository.CORNER_SQUARE) {
-                    scope.launch { 
-                        repository.updateSetting(ExcuseRepository.CORNER_STYLE_KEY, ExcuseRepository.CORNER_SQUARE)
-                        NoThanksWidget().updateAll(context)
-                    }
-                }
+                )
             }
         }
 
+        // Copy Mechanism section
         item {
-            Text("Copy Mechanism", style = MaterialTheme.typography.titleMedium)
-            Row {
-                RadioButtonSetting("Tap Text", currentCopyMechanism == ExcuseRepository.COPY_TAP) {
-                    scope.launch { 
-                        repository.updateSetting(ExcuseRepository.COPY_MECHANISM_KEY, ExcuseRepository.COPY_TAP)
-                        NoThanksWidget().updateAll(context)
+            SettingsSection(title = "Copy Mechanism") {
+                val copyOptions = listOf(
+                    ExcuseRepository.COPY_TAP to "Tap Text",
+                    ExcuseRepository.COPY_BUTTON to "Copy Button"
+                )
+                SegmentedOptions(
+                    options = copyOptions,
+                    selectedValue = currentCopyMechanism,
+                    onSelect = { value ->
+                        scope.launch {
+                            repository.updateSetting(ExcuseRepository.COPY_MECHANISM_KEY, value)
+                            NoThanksWidget().updateAll(context)
+                        }
                     }
-                }
-                RadioButtonSetting("Copy Button", currentCopyMechanism == ExcuseRepository.COPY_BUTTON) {
-                    scope.launch { 
-                        repository.updateSetting(ExcuseRepository.COPY_MECHANISM_KEY, ExcuseRepository.COPY_BUTTON)
-                        NoThanksWidget().updateAll(context)
+                )
+            }
+        }
+
+        // Show Previous Button toggle
+        item {
+            SettingsSection(title = "Navigation") {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Show Previous Button",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Text(
+                            text = "Show ← button to browse excuse history",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
+                    Switch(
+                        checked = showPrevButton,
+                        onCheckedChange = { checked ->
+                            scope.launch {
+                                repository.updateSetting(ExcuseRepository.SHOW_PREV_BUTTON_KEY, checked)
+                                NoThanksWidget().updateAll(context)
+                            }
+                        }
+                    )
                 }
             }
         }
         
+        // Fetch button
         item {
-            Button(
+            FilledTonalButton(
                 onClick = { 
                     scope.launch { 
                         repository.getNextExcuse()
                         NoThanksWidget().updateAll(context)
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Fetch New Excuse & Update Widget")
+                Text(
+                    "Fetch New Excuse & Update Widget",
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            }
+        }
+
+        // Bottom spacer for edge-to-edge
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+fun SettingsSection(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+            content()
+        }
+    }
+}
+
+@Composable
+fun SegmentedOptions(
+    options: List<Pair<String, String>>,
+    selectedValue: String,
+    onSelect: (String) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        options.forEach { (value, label) ->
+            val isSelected = selectedValue == value
+            OutlinedButton(
+                onClick = { onSelect(value) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
+                    else MaterialTheme.colorScheme.surface
+                ),
+                border = BorderStroke(
+                    1.dp,
+                    if (isSelected) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.outlineVariant
+                )
+            ) {
+                Text(
+                    text = label,
+                    fontSize = 13.sp,
+                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
+                    else MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }
 }
 
 @Composable
-fun RadioButtonSetting(label: String, selected: Boolean, onClick: () -> Unit) {
+fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () -> Unit) {
+    // Resolve preview colors for the theme chip
+    val (bgColor, fgColor) = when (theme) {
+        ExcuseRepository.THEME_NOTHING -> {
+            androidx.compose.ui.graphics.Color.Black to androidx.compose.ui.graphics.Color.White
+        }
+        ExcuseRepository.THEME_SAMSUNG -> {
+            androidx.compose.ui.graphics.Color(0xFF1A1A1A) to androidx.compose.ui.graphics.Color(0xFFF7F7F7)
+        }
+        else -> {
+            androidx.compose.ui.graphics.Color(0xFF1C1B1F) to androidx.compose.ui.graphics.Color(0xFFE6E1E5)
+        }
+    }
+
     Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.selectable(selected = selected, onClick = onClick).padding(8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .selectable(selected = selected, onClick = onClick)
+            .padding(horizontal = 4.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         RadioButton(selected = selected, onClick = null)
-        Text(label, modifier = Modifier.padding(start = 4.dp))
+        Text(
+            label,
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .weight(1f),
+            style = MaterialTheme.typography.bodyLarge
+        )
+        // Color preview chip
+        Row(
+            modifier = Modifier
+                .clip(RoundedCornerShape(6.dp))
+                .background(bgColor)
+                .padding(horizontal = 10.dp, vertical = 4.dp)
+        ) {
+            Text(
+                text = "No",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = fgColor
+            )
+        }
     }
 }

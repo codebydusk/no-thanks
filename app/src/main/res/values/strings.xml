@@ -1,4 +1,33 @@
 <resources>
     <string name="app_name">No, thanks!</string>
+    <string name="app_tagline">Ever needed a graceful way to say no?</string>
     <string name="widget_description">A widget to help you say no.</string>
+
+    <string name="settings_title">Settings</string>
+
+    <string name="section_dark_mode">Appearance</string>
+    <string name="dark_mode_system">System</string>
+    <string name="dark_mode_light">Light</string>
+    <string name="dark_mode_dark">Dark</string>
+
+    <string name="section_theme">Widget Theme</string>
+    <string name="theme_material">Material</string>
+    <string name="theme_nothing">Nothing OS</string>
+    <string name="theme_samsung">Samsung</string>
+
+    <string name="section_corners">Corner Style</string>
+    <string name="corner_round">Round</string>
+    <string name="corner_square">Square</string>
+
+    <string name="section_copy">Copy Mechanism</string>
+    <string name="copy_tap">Tap Text</string>
+    <string name="copy_button">Copy Button</string>
+
+    <string name="loading_text">Finding an excuse…</string>
+    <string name="copied_text">Copied!</string>
+    <string name="fetch_button">Fetch New Excuse &amp; Update Widget</string>
+
+    <string name="section_navigation">Navigation</string>
+    <string name="show_prev_button_title">Show Previous Button</string>
+    <string name="show_prev_button_desc">Show ← button to browse excuse history</string>
 </resources>

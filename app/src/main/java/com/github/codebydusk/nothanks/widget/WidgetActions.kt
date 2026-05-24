@@ -4,13 +4,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.state.updateAppWidgetState
 import com.github.codebydusk.nothanks.data.ExcuseRepository
-import com.github.codebydusk.nothanks.data.dataStore
 import kotlinx.coroutines.delay
 
 val IS_COPIED_KEY = booleanPreferencesKey("is_copied")
@@ -18,14 +16,8 @@ val IS_COPIED_KEY = booleanPreferencesKey("is_copied")
 class RefreshAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val repository = ExcuseRepository(context)
-        val currentIndex = repository.getCurrentIndex()
-        val historySize = repository.getHistorySize()
-        
-        if (currentIndex < historySize - 1) {
-            repository.getNextFromHistory()
-        } else {
-            repository.getNextExcuse()
-        }
+        // Always fetch a new excuse from API
+        repository.getNextExcuse()
         NoThanksWidget().update(context, glanceId)
     }
 }
@@ -56,20 +48,24 @@ class CopyAction : ActionCallback {
         val text = repository.getCurrentExcuse() ?: return
         
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("Excuse", text)
+        val clip = ClipData.newPlainText("No, Thanks! Excuse", text)
         clipboard.setPrimaryClip(clip)
 
-        // Update state to show "Copied!"
+        // Show "Copied!" feedback
         updateAppWidgetState(context, glanceId) { prefs ->
             prefs[IS_COPIED_KEY] = true
         }
         NoThanksWidget().update(context, glanceId)
 
-        // Wait 2 seconds and revert
-        delay(2000)
-        updateAppWidgetState(context, glanceId) { prefs ->
-            prefs[IS_COPIED_KEY] = false
+        // Revert after 2 seconds
+        try {
+            delay(2000)
+            updateAppWidgetState(context, glanceId) { prefs ->
+                prefs[IS_COPIED_KEY] = false
+            }
+            NoThanksWidget().update(context, glanceId)
+        } catch (_: Exception) {
+            // Widget may have been removed during the delay — ignore gracefully
         }
-        NoThanksWidget().update(context, glanceId)
     }
 }

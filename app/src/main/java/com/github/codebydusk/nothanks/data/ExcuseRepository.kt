@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.random.Random
 
 val Context.dataStore by preferencesDataStore(name = "settings")
 
@@ -27,31 +28,53 @@ class ExcuseRepository(private val context: Context) {
         private val HISTORY_KEY = stringPreferencesKey("history")
         private val CURRENT_INDEX_KEY = intPreferencesKey("current_index")
         
-        // Settings
-        val DARK_MODE_KEY = booleanPreferencesKey("dark_mode")
+        // Settings keys
+        val DARK_MODE_KEY = stringPreferencesKey("dark_mode_v2")
         val THEME_KEY = stringPreferencesKey("theme")
         val CORNER_STYLE_KEY = stringPreferencesKey("corner_style")
         val COPY_MECHANISM_KEY = stringPreferencesKey("copy_mechanism")
+        val SHOW_PREV_BUTTON_KEY = booleanPreferencesKey("show_prev_button")
 
+        // Dark mode values
+        const val DARK_MODE_SYSTEM = "SYSTEM"
+        const val DARK_MODE_LIGHT = "LIGHT"
+        const val DARK_MODE_DARK = "DARK"
+
+        // Theme values
         const val THEME_NOTHING = "NOTHING"
         const val THEME_SAMSUNG = "SAMSUNG"
         const val THEME_MATERIAL = "MATERIAL"
 
+        // Corner style values
         const val CORNER_ROUND = "ROUND"
         const val CORNER_SQUARE = "SQUARE"
 
+        // Copy mechanism values
         const val COPY_TAP = "TAP"
         const val COPY_BUTTON = "BUTTON"
+
+        // Sarcastic fallback messages for API failure
+        val FALLBACK_MESSAGES = listOf(
+            "We ran out of excuses today. Please try again.",
+            "Even our excuse generator needs a break sometimes.",
+            "The excuse factory workers are on strike. Check back later.",
+            "Our excuse hamster stopped running. Give it a moment.",
+            "Error 404: Excuses not found. The irony is not lost on us.",
+            "The internet ate your excuse. Classic.",
+            "Looks like we need an excuse for not having excuses.",
+            "Our server said 'No, thanks!' to your request."
+        )
     }
 
-    suspend fun getNextExcuse(): String? {
+    suspend fun getNextExcuse(): String {
         return try {
             val response = api.getExcuse()
             val reason = response.reason
             addToHistory(reason)
             reason
         } catch (e: Exception) {
-            null
+            val fallback = FALLBACK_MESSAGES[Random.nextInt(FALLBACK_MESSAGES.size)]
+            fallback
         }
     }
 
@@ -134,19 +157,22 @@ class ExcuseRepository(private val context: Context) {
         return history.size
     }
 
-    val darkModeFlow: Flow<Boolean?> = context.dataStore.data.map { it[DARK_MODE_KEY] }
+    // Flows for settings observation
+    val darkModeFlow: Flow<String> = context.dataStore.data.map { it[DARK_MODE_KEY] ?: DARK_MODE_SYSTEM }
     val themeFlow: Flow<String> = context.dataStore.data.map { it[THEME_KEY] ?: THEME_MATERIAL }
     val cornerStyleFlow: Flow<String> = context.dataStore.data.map { it[CORNER_STYLE_KEY] ?: CORNER_ROUND }
     val copyMechanismFlow: Flow<String> = context.dataStore.data.map { it[COPY_MECHANISM_KEY] ?: COPY_TAP }
+    val showPrevButtonFlow: Flow<Boolean> = context.dataStore.data.map { it[SHOW_PREV_BUTTON_KEY] ?: true }
 
     suspend fun updateSetting(key: Preferences.Key<*>, value: Any) {
         context.dataStore.edit { preferences ->
             @Suppress("UNCHECKED_CAST")
             when (key) {
-                DARK_MODE_KEY -> preferences[DARK_MODE_KEY] = value as Boolean
+                DARK_MODE_KEY -> preferences[DARK_MODE_KEY] = value as String
                 THEME_KEY -> preferences[THEME_KEY] = value as String
                 CORNER_STYLE_KEY -> preferences[CORNER_STYLE_KEY] = value as String
                 COPY_MECHANISM_KEY -> preferences[COPY_MECHANISM_KEY] = value as String
+                SHOW_PREV_BUTTON_KEY -> preferences[SHOW_PREV_BUTTON_KEY] = value as Boolean
             }
         }
     }
