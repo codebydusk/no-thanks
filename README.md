@@ -98,7 +98,7 @@ Response:
 
 | Theme | Dark | Light |
 |---|---|---|
-| **Nothing OS** | Pure black bg, white text, bold font | Pure white bg, black text, bold font |
+| **Nothing OS** | Black bg, Nothing red (#D71921) text, bold font | White bg, black text, bold font |
 | **Samsung One UI** | Warm dark (#1A1A1A), warm light text | Warm light (#F7F7F7), dark text |
 | **Material** | Standard surface (#1C1B1F) | Standard surface (#FFFBFE) |
 

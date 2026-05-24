@@ -221,8 +221,8 @@ class NoThanksWidget : GlanceAppWidget() {
     private fun resolveColors(theme: String, isDark: Boolean): Pair<ComposeColor, ComposeColor> {
         return when (theme) {
             ExcuseRepository.THEME_NOTHING -> {
-                // Nothing OS: pure black & white
-                if (isDark) Pair(ComposeColor.Black, ComposeColor.White)
+                // Nothing OS: black & red (dark), white & black (light)
+                if (isDark) Pair(ComposeColor.Black, ComposeColor(0xFFD71921))
                 else Pair(ComposeColor.White, ComposeColor.Black)
             }
             ExcuseRepository.THEME_SAMSUNG -> {

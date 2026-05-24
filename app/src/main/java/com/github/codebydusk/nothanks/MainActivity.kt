@@ -315,7 +315,7 @@ fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () 
     // Resolve preview colors for the theme chip
     val (bgColor, fgColor) = when (theme) {
         ExcuseRepository.THEME_NOTHING -> {
-            androidx.compose.ui.graphics.Color.Black to androidx.compose.ui.graphics.Color.White
+            androidx.compose.ui.graphics.Color.Black to androidx.compose.ui.graphics.Color(0xFFD71921)
         }
         ExcuseRepository.THEME_SAMSUNG -> {
             androidx.compose.ui.graphics.Color(0xFF1A1A1A) to androidx.compose.ui.graphics.Color(0xFFF7F7F7)
