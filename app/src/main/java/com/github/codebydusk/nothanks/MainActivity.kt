@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -59,7 +61,7 @@ class MainActivity : ComponentActivity() {
 fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     
-    val currentTheme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_MATERIAL)
+    val currentTheme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_NOTHANKS)
     val currentCornerStyle by repository.cornerStyleFlow.collectAsState(initial = ExcuseRepository.CORNER_ROUND)
     val currentDarkMode by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)
     val currentCopyMechanism by repository.copyMechanismFlow.collectAsState(initial = ExcuseRepository.COPY_TAP)
@@ -89,11 +91,10 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                         .padding(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "✕",
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Black,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_app_logo),
+                        contentDescription = "No, Thanks! logo",
+                        modifier = Modifier.size(72.dp)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -131,6 +132,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
         item {
             SettingsSection(title = "Widget Theme") {
                 val themeOptions = listOf(
+                    ExcuseRepository.THEME_NOTHANKS to "No, Thanks!",
                     ExcuseRepository.THEME_MATERIAL to "Material",
                     ExcuseRepository.THEME_NOTHING to "Nothing OS",
                     ExcuseRepository.THEME_SAMSUNG to "Samsung",
@@ -316,6 +318,9 @@ fun SegmentedOptions(
 fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () -> Unit) {
     // Resolve preview colors for the theme chip
     val (bgColor, fgColor) = when (theme) {
+        ExcuseRepository.THEME_NOTHANKS -> {
+            androidx.compose.ui.graphics.Color(0xFF000E24) to androidx.compose.ui.graphics.Color(0xFFCCE0FF)
+        }
         ExcuseRepository.THEME_NOTHING -> {
             androidx.compose.ui.graphics.Color.Black to androidx.compose.ui.graphics.Color(0xFFD71921)
         }

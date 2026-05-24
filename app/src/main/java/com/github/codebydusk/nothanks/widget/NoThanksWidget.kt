@@ -77,7 +77,7 @@ class NoThanksWidget : GlanceAppWidget() {
             val size = LocalSize.current
 
             WidgetContent(
-                text = if (isCopied) "Copied!" else currentText,
+                text = if (isCopied) "Copied!" else "No, thanks! $currentText",
                 theme = theme,
                 cornerStyle = cornerStyle,
                 isDark = isDark,
@@ -108,15 +108,19 @@ class NoThanksWidget : GlanceAppWidget() {
             ExcuseRepository.THEME_SAMSUNG -> 12.dp
             else -> 10.dp
         }
+        // Extra horizontal breathing room so text never butts against the edges
+        val hPadding = padding + 8.dp
 
         val fontSize = when (theme) {
-            ExcuseRepository.THEME_NOTHING -> 16.sp
-            ExcuseRepository.THEME_SAMSUNG -> 17.sp
+            ExcuseRepository.THEME_NOTHING   -> 16.sp
+            ExcuseRepository.THEME_SAMSUNG   -> 17.sp
+            ExcuseRepository.THEME_NOTHANKS  -> 17.sp
             else -> 18.sp
         }
 
         val fontWeight = when (theme) {
-            ExcuseRepository.THEME_NOTHING -> FontWeight.Bold
+            ExcuseRepository.THEME_NOTHING  -> FontWeight.Bold
+            ExcuseRepository.THEME_NOTHANKS -> FontWeight.Bold
             else -> FontWeight.Normal
         }
 
@@ -126,8 +130,9 @@ class NoThanksWidget : GlanceAppWidget() {
         // OnePlus      → SansSerif (clean OxygenOS feel)
         // Material     → SansSerif (default clean)
         val fontFamily = when (theme) {
-            ExcuseRepository.THEME_NOTHING -> FontFamily.Monospace
-            ExcuseRepository.THEME_SAMSUNG -> FontFamily("sans-serif-medium")
+            ExcuseRepository.THEME_NOTHING  -> FontFamily.Monospace
+            ExcuseRepository.THEME_SAMSUNG  -> FontFamily("sans-serif-medium")
+            ExcuseRepository.THEME_NOTHANKS -> FontFamily.SansSerif
             else -> FontFamily.SansSerif
         }
 
@@ -137,7 +142,7 @@ class NoThanksWidget : GlanceAppWidget() {
         val baseModifier = GlanceModifier
             .fillMaxSize()
             .background(backgroundColor)
-            .padding(padding)
+            .padding(horizontal = hPadding, vertical = padding)
 
         val boxModifier = when (cornerStyle) {
             ExcuseRepository.CORNER_ROUND  -> baseModifier.cornerRadius(50.dp)
@@ -278,6 +283,18 @@ class NoThanksWidget : GlanceAppWidget() {
             background = ComposeColor(0xFFFAFAFA),
             foreground = ComposeColor(0xFF0F0F0F),
             accent     = ComposeColor(0xFFF6000D)
+        )
+
+        ExcuseRepository.THEME_NOTHANKS -> if (isDark) ThemeColors(
+            // Dark: near-black navy background, light sky-blue text, vivid blue accent
+            background = ComposeColor(0xFF000E24),  // Digital Blue 950
+            foreground = ComposeColor(0xFFCCE0FF),  // Digital Blue 100
+            accent     = ComposeColor(0xFF3385FF)   // Digital Blue 400
+        ) else ThemeColors(
+            // Light: softest blue background, deep navy text, brand blue accent
+            background = ComposeColor(0xFFE5F0FF),  // Digital Blue 50
+            foreground = ComposeColor(0xFF002966),  // Digital Blue 800
+            accent     = ComposeColor(0xFF0052CC)   // Digital Blue 600
         )
 
         else /* THEME_MATERIAL */ -> if (isDark) ThemeColors(

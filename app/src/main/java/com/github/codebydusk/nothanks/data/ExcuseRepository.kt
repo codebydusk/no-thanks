@@ -45,6 +45,7 @@ class ExcuseRepository(private val context: Context) {
         const val THEME_SAMSUNG = "SAMSUNG"
         const val THEME_MATERIAL = "MATERIAL"
         const val THEME_ONEPLUS = "ONEPLUS"
+        const val THEME_NOTHANKS = "NOTHANKS"  // App's own branded Digital Blue theme
 
         // Corner style values
         const val CORNER_ROUND = "ROUND"
@@ -218,9 +219,9 @@ class ExcuseRepository(private val context: Context) {
         return history.size
     }
 
-    // Flows for settings observation
+    // Flows for settings observation (THEME_NOTHANKS is the default on fresh install)
     val darkModeFlow: Flow<String> = context.dataStore.data.map { it[DARK_MODE_KEY] ?: DARK_MODE_SYSTEM }
-    val themeFlow: Flow<String> = context.dataStore.data.map { it[THEME_KEY] ?: THEME_MATERIAL }
+    val themeFlow: Flow<String> = context.dataStore.data.map { it[THEME_KEY] ?: THEME_NOTHANKS }
     val cornerStyleFlow: Flow<String> = context.dataStore.data.map { it[CORNER_STYLE_KEY] ?: CORNER_ROUND }
     val copyMechanismFlow: Flow<String> = context.dataStore.data.map { it[COPY_MECHANISM_KEY] ?: COPY_TAP }
     val showPrevButtonFlow: Flow<Boolean> = context.dataStore.data.map { it[SHOW_PREV_BUTTON_KEY] ?: true }
