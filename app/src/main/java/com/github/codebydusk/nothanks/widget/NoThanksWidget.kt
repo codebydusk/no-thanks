@@ -65,7 +65,8 @@ class NoThanksWidget : GlanceAppWidget() {
         provideContent {
             val state = currentState<Preferences>()
             val currentText = state[CURRENT_TEXT_KEY] ?: "Tap ↻ to fetch"
-            val isCopied = state[IS_COPIED_KEY] ?: false
+            val isCopied  = state[IS_COPIED_KEY]  ?: false
+            val isLoading = state[IS_LOADING_KEY] ?: false
 
             val theme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_MATERIAL)
             val cornerStyle by repository.cornerStyleFlow.collectAsState(initial = ExcuseRepository.CORNER_ROUND)
@@ -77,7 +78,12 @@ class NoThanksWidget : GlanceAppWidget() {
             val size = LocalSize.current
 
             WidgetContent(
-                text = if (isCopied) "Copied!" else "No, thanks! $currentText",
+                // Prepend "No, thanks!" only to real API text — not loading quips or "Copied!"
+                text = when {
+                    isCopied  -> "Copied!"
+                    isLoading -> currentText
+                    else      -> "No, thanks! $currentText"
+                },
                 theme = theme,
                 cornerStyle = cornerStyle,
                 isDark = isDark,
@@ -183,7 +189,7 @@ class NoThanksWidget : GlanceAppWidget() {
                     }
 
                     if (isExpanded) {
-                        // 4x2 mode: scrollable text
+                        // 4x2 mode: unlimited lines — LazyColumn handles scrolling
                         Box(modifier = finalModifier, contentAlignment = Alignment.CenterStart) {
                             LazyColumn(modifier = GlanceModifier.fillMaxSize()) {
                                 item {
@@ -194,14 +200,13 @@ class NoThanksWidget : GlanceAppWidget() {
                                             fontSize = fontSize,
                                             fontWeight = fontWeight,
                                             fontFamily = fontFamily
-                                        ),
-                                        maxLines = 6
+                                        )
                                     )
                                 }
                             }
                         }
                     } else {
-                        // 4x1 mode: compact text
+                        // 4x1 mode: allow up to 3 lines before truncating
                         Box(modifier = finalModifier, contentAlignment = Alignment.CenterStart) {
                             Text(
                                 text = text,
@@ -211,7 +216,7 @@ class NoThanksWidget : GlanceAppWidget() {
                                     fontWeight = fontWeight,
                                     fontFamily = fontFamily
                                 ),
-                                maxLines = 2
+                                maxLines = 3
                             )
                         }
                     }

@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         CenterAlignedTopAppBar(
-                            title = { Text("No, Thanks!") },
+                            title = { Text("No, thanks!") },
                             colors = TopAppBarDefaults.topAppBarColors(
                                 containerColor = MaterialTheme.colorScheme.surface
                             )
@@ -132,7 +132,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
         item {
             SettingsSection(title = "Widget Theme") {
                 val themeOptions = listOf(
-                    ExcuseRepository.THEME_NOTHANKS to "No, Thanks!",
+                    ExcuseRepository.THEME_NOTHANKS to "No, thanks!",
                     ExcuseRepository.THEME_MATERIAL to "Material",
                     ExcuseRepository.THEME_NOTHING to "Nothing OS",
                     ExcuseRepository.THEME_SAMSUNG to "Samsung",
@@ -160,9 +160,9 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
         item {
             SettingsSection(title = "Corner Style") {
                 val cornerOptions = listOf(
-                    ExcuseRepository.CORNER_ROUND to "Pill  ◉",
-                    ExcuseRepository.CORNER_SQUARE to "Rounded  ▢",
-                    ExcuseRepository.CORNER_SHARP to "Sharp  ◼"
+                    ExcuseRepository.CORNER_ROUND to "Pill",
+                    ExcuseRepository.CORNER_SQUARE to "Rounded",
+                    ExcuseRepository.CORNER_SHARP to "Sharp"
                 )
                 SegmentedOptions(
                     options = cornerOptions,

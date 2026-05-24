@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Self-contained app logo VectorDrawable — safe for painterResource() in Compose.
-  Combines background + letter paths in a single vector (not an adaptive-icon).
-  Viewport 108×108 to match the launcher icon proportions.
-  Letters are scaled to 0.85× (same safe-zone logic as the adaptive icon foreground).
+  Settings page logo — self-contained flat VectorDrawable.
+  Same circle-badge+evenOdd design as the adaptive icon.
+  Background: rounded square in Digital Blue 800 (#002966)
+  Badge: Digital Blue 100 (#CCE0FF) with NO holes punched through
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -11,69 +11,22 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Background: rounded rect, Digital Blue 600 #0052CC -->
+    <!-- Rounded background square -->
     <path
-        android:fillColor="#FF0052CC"
-        android:pathData="M20,0 H88 Q108,0 108,20 V88 Q108,108 88,108 H20 Q0,108 0,88 V20 Q0,0 20,0 Z"/>
+        android:fillColor="#FF002966"
+        android:pathData="M18,0 H90 Q108,0 108,18 V90 Q108,108 90,108 H18 Q0,108 0,90 V18 Q0,0 18,0 Z"/>
 
-    <!-- All letter paths scaled 0.85× around centre (54,54) -->
-    <group
-        android:scaleX="0.85"
-        android:scaleY="0.85"
-        android:pivotX="54"
-        android:pivotY="54">
-
-        <!-- ═══ "NO" — Digital Blue 50 (#E5F0FF) ═══ -->
-
-        <!-- N: left bar, diagonal, right bar -->
-        <path android:fillColor="#E5F0FF"
-            android:pathData="M16,15 H22 V57 H16 Z"/>
-        <path android:fillColor="#E5F0FF"
-            android:pathData="M22,15 H28 L53,57 H47 Z"/>
-        <path android:fillColor="#E5F0FF"
-            android:pathData="M47,15 H53 V57 H47 Z"/>
-
-        <!-- O: evenOdd ring -->
-        <path android:fillColor="#E5F0FF"
-            android:fillType="evenOdd"
-            android:pathData="M57,15 H92 V57 H57 Z M62,21 H87 V51 H62 Z"/>
-
-        <!-- ═══ "THANKS" — Digital Blue 200 (#99C2FF) ═══ -->
-
-        <!-- T -->
-        <path android:fillColor="#99C2FF"
-            android:pathData="M16,63 H27 V65 H22.5 V82 H20.5 V65 H16 Z"/>
-
-        <!-- H -->
-        <path android:fillColor="#99C2FF"
-            android:pathData="M29,63 H31 V72 H38 V63 H40 V82 H38 V74 H31 V82 H29 Z"/>
-
-        <!-- A (two legs + crossbar) -->
-        <path android:fillColor="#99C2FF"
-            android:pathData="M46.5,63 H48.5 L44,82 H42 Z"/>
-        <path android:fillColor="#99C2FF"
-            android:pathData="M46.5,63 H48.5 L53,82 H51 Z"/>
-        <path android:fillColor="#99C2FF"
-            android:pathData="M43.5,76 H52 V78 H43.5 Z"/>
-
-        <!-- N (left bar + diagonal + right bar) -->
-        <path android:fillColor="#99C2FF"
-            android:pathData="M55,63 H57 V82 H55 Z"/>
-        <path android:fillColor="#99C2FF"
-            android:pathData="M57,63 H59 L64,82 H62 Z"/>
-        <path android:fillColor="#99C2FF"
-            android:pathData="M64,63 H66 V82 H64 Z"/>
-
-        <!-- K (left bar + V-arm) -->
-        <path android:fillColor="#99C2FF"
-            android:pathData="M68,63 H70 V82 H68 Z"/>
-        <path android:fillColor="#99C2FF"
-            android:pathData="M70,72.5 L75.5,63 H78 L72.5,72.5 L78,82 H75.5 Z"/>
-
-        <!-- S (five segments) -->
-        <path android:fillColor="#99C2FF"
-            android:pathData="M81,63 H92 V65 H81 Z M81,65 H83 V71 H81 Z M81,71 H92 V73 H81 Z M90,73 H92 V79 H90 Z M81,79 H92 V82 H81 Z"/>
-
-    </group>
+    <!-- Circle badge with NO punch-through holes -->
+    <path
+        android:fillColor="#CCE0FF"
+        android:fillType="evenOdd"
+        android:pathData="
+            M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z
+            M31,32 H38 V76 H31 Z
+            M38,32 H44 L51,76 H45 Z
+            M45,32 H53 V76 H45 Z
+            M57,32 H77 V76 H57 Z
+            M63,38 H71 V70 H63 Z
+        "/>
 
 </vector>

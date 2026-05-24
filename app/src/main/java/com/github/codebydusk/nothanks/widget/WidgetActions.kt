@@ -12,7 +12,8 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import com.github.codebydusk.nothanks.data.ExcuseRepository
 import kotlinx.coroutines.delay
 
-val IS_COPIED_KEY = booleanPreferencesKey("is_copied")
+val IS_COPIED_KEY  = booleanPreferencesKey("is_copied")
+val IS_LOADING_KEY = booleanPreferencesKey("is_loading")
 val CURRENT_TEXT_KEY = stringPreferencesKey("current_text")
 
 class RefreshAction : ActionCallback {
@@ -20,17 +21,19 @@ class RefreshAction : ActionCallback {
         val repository = ExcuseRepository(context)
         val theme = repository.getThemeSetting()
 
-        // Show a hilarious theme-appropriate loading message immediately
+        // Show a hilarious theme-appropriate loading message — IS_LOADING_KEY=true skips the "No, thanks!" prefix
         val loadingMsg = ExcuseRepository.getRandomLoadingMessage(theme)
         updateAppWidgetState(context, glanceId) { prefs ->
             prefs[CURRENT_TEXT_KEY] = loadingMsg
+            prefs[IS_LOADING_KEY] = true
         }
         NoThanksWidget().update(context, glanceId)
 
-        // Fetch new excuse from API, then replace the loading message
+        // Fetch; set IS_LOADING_KEY=false so the prefix is applied to the real result
         val newText = repository.getNextExcuse()
         updateAppWidgetState(context, glanceId) { prefs ->
             prefs[CURRENT_TEXT_KEY] = newText
+            prefs[IS_LOADING_KEY] = false
         }
         NoThanksWidget().update(context, glanceId)
     }
@@ -55,6 +58,7 @@ class HistoryAction : ActionCallback {
         if (newText != null) {
             updateAppWidgetState(context, glanceId) { prefs ->
                 prefs[CURRENT_TEXT_KEY] = newText
+                prefs[IS_LOADING_KEY] = false
             }
         }
         NoThanksWidget().update(context, glanceId)
@@ -64,11 +68,11 @@ class HistoryAction : ActionCallback {
 class CopyAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val repository = ExcuseRepository(context)
-        // Read from history, not widget state — avoids copying a loading message
+        // Read from history, not widget state — avoids copying a transient loading message
         val text = repository.getCurrentExcuse() ?: return
 
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("No, Thanks! Excuse", text)
+        val clip = ClipData.newPlainText("No, thanks! Excuse", text)
         clipboard.setPrimaryClip(clip)
 
         // Show "Copied!" feedback for 2 seconds
@@ -84,7 +88,7 @@ class CopyAction : ActionCallback {
             }
             NoThanksWidget().update(context, glanceId)
         } catch (_: Exception) {
-            // Widget may have been removed during delay — ignore gracefully
+            // Widget removed during delay — ignore gracefully
         }
     }
 }
