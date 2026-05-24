@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">No, thanks!</string>
+    <string name="widget_description">A widget to help you say no.</string>
 </resources>
