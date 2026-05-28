@@ -30,7 +30,6 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 | Version | Date | Notes |
 | --- | --- | --- |
 | [v1.0.0](https://github.com/codebydusk/no-thanks/releases/tag/v1.0) | — | Initial release |
-| [v1.0.1](https://github.com/codebydusk/no-thanks/releases/tag/v1.0.1) | — | Added digital signature for security, fixed some bugs in code and updated the documentation. |
 
 > Older releases are always available on the [GitHub Releases page](https://github.com/codebydusk/no-thanks/releases).
 
