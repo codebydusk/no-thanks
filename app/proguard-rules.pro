@@ -32,7 +32,28 @@
 -dontwarn javax.annotation.**
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 
+##── Room (used internally by WorkManager / Glance) ───────────────────────────
+# Room generates a *_Impl class at compile time and finds it by naming convention
+# at runtime. R8 was stripping WorkDatabase_Impl, causing the startup crash:
+#   "Failed to create an instance of androidx.work.impl.WorkDatabase"
+-keep class * extends androidx.room.RoomDatabase { *; }
+-keepclassmembers class * extends androidx.room.RoomDatabase { *; }
+-keep @androidx.room.Database class * { *; }
+-dontwarn androidx.room.**
+
+##── WorkManager (pulled in transitively by Glance for widget scheduling) ─────
+# WorkManager locates Worker implementations by class name via reflection.
+-keep class androidx.work.** { *; }
+-keep interface androidx.work.** { *; }
+-keep class * extends androidx.work.Worker { *; }
+-keep class * extends androidx.work.CoroutineWorker { *; }
+-keep class * extends androidx.work.ListenableWorker {
+    public <init>(android.content.Context, androidx.work.WorkerParameters);
+}
+-dontwarn androidx.work.**
+
 ##── Jetpack Glance ───────────────────────────────────────────────────────────
+
 # Glance resolves ActionCallbacks, GlanceAppWidget, and GlanceAppWidgetReceiver
 # by class name at runtime. If R8 renames or removes them the widget crashes.
 -keep class * extends androidx.glance.appwidget.GlanceAppWidget { *; }
