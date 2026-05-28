@@ -52,17 +52,15 @@
 }
 -dontwarn androidx.work.**
 
-##── Jetpack Glance ───────────────────────────────────────────────────────────
-
-# Glance resolves ActionCallbacks, GlanceAppWidget, and GlanceAppWidgetReceiver
-# by class name at runtime. If R8 renames or removes them the widget crashes.
--keep class * extends androidx.glance.appwidget.GlanceAppWidget { *; }
--keep class * extends androidx.glance.appwidget.GlanceAppWidgetReceiver { *; }
--keep class * extends androidx.glance.action.ActionCallback {
-    public <init>();
-    public <methods>;
-}
-# Specifically keep all widget action classes in this package
+##── Jetpack Glance (comprehensive) ───────────────────────────────────────────
+# Glance uses reflection extensively for composable resolution, state management,
+# SizeMode dispatch, and ActionCallback lookup via actionRunCallback<T>().
+# Keeping only subclasses is not enough — all Glance internals must be kept.
+-keep class androidx.glance.** { *; }
+-keep interface androidx.glance.** { *; }
+# ActionCallback subclasses — resolved by reified type → class name at runtime
+-keep class * extends androidx.glance.action.ActionCallback { *; }
+# All app widget classes: NoThanksWidget, NoThanksWidgetReceiver, *Action
 -keep class com.github.codebydusk.nothanks.widget.** { *; }
 
 ##── Jetpack DataStore ────────────────────────────────────────────────────────
@@ -73,8 +71,13 @@
 -dontwarn androidx.compose.**
 -keep class androidx.compose.** { *; }
 
-##── Kotlin Coroutines ────────────────────────────────────────────────────────
--keepclassmembernames class kotlinx.** { volatile <fields>; }
+##── Kotlin Coroutines (complete) ────────────────────────────────────────────
+# Coroutines dispatch machinery is found by class name at runtime.
+# The previous rule only kept volatile fields — far too weak for Glance widgets.
+-keep class kotlin.coroutines.** { *; }
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembernames class kotlinx.coroutines.** { volatile <fields>; }
 -dontwarn kotlinx.coroutines.**
 
 ##── Debug: preserve line numbers in release crash stack traces ───────────────
