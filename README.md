@@ -13,7 +13,26 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 ## Download
 
-> **Pre-built APK coming soon.** For now, build from source using the instructions below.
+<div align="center">
+
+[![Latest Release](https://img.shields.io/github/v/release/codebydusk/no-thanks?style=for-the-badge&logo=android&label=Latest+APK&color=0052CC)](https://github.com/codebydusk/no-thanks/releases/latest)
+&nbsp;
+[![Total Downloads](https://img.shields.io/github/downloads/codebydusk/no-thanks/total?style=for-the-badge&color=002966&label=Total+Downloads)](https://github.com/codebydusk/no-thanks/releases)
+
+**[⬇ Download latest APK](https://github.com/codebydusk/no-thanks/releases/latest)** &nbsp;·&nbsp; [View all releases →](https://github.com/codebydusk/no-thanks/releases)
+
+</div>
+
+> **Note:** The APK is unsigned (debug-signed by the CI runner). Android may show an "unknown source" prompt on first install — this is expected. Enable *Install from unknown sources* for your browser or file manager.
+
+### Release History
+
+| Version | Date | Notes |
+| --- | --- | --- |
+| [v1.0](https://github.com/codebydusk/no-thanks/releases/tag/v1.0) | — | Initial release |
+
+> Older releases are always available on the [GitHub Releases page](https://github.com/codebydusk/no-thanks/releases).
+
 
 ## Features
 

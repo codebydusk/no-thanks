@@ -9,11 +9,15 @@ on:
         required: false
         default: ''
 
-  # ── Also runs on every push to main (CI smoke-test only, no upload) ─────────
+  # ── CI smoke-test on every push / PR to main (no release created) ──────────
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+# Allow the job to create GitHub Releases and upload assets
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -26,6 +30,8 @@ jobs:
       # actions/checkout v4.2.2 — verify at https://github.com/actions/checkout/releases/tag/v4.2.2
       - name: Checkout source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0   # full history needed for --generate-notes
 
       # ── Java ────────────────────────────────────────────────────────────────
       # actions/setup-java v4.7.0 — verify at https://github.com/actions/setup-java/releases/tag/v4.7.0
@@ -59,6 +65,7 @@ jobs:
         run: |
           VERSION=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "apk_name=no-thanks-v${VERSION}.apk" >> $GITHUB_OUTPUT
           echo "Resolved version: $VERSION"
 
       # ── Rename APK to no-thanks-v{VERSION}.apk ─────────────────────────────
@@ -67,12 +74,30 @@ jobs:
           mv app/build/outputs/apk/release/app-release-unsigned.apk \
              app/build/outputs/apk/release/no-thanks-v${{ steps.version.outputs.version }}.apk
 
-      # ── Upload artifact (only on manual dispatch or main push) ─────────────
+      # ── Upload workflow artifact (available for every build) ────────────────
       # actions/upload-artifact v4.6.2 — verify at https://github.com/actions/upload-artifact/releases/tag/v4.6.2
-      - name: Upload release APK
-        if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' }}
+      - name: Upload APK artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: no-thanks-v${{ steps.version.outputs.version }}
           path: app/build/outputs/apk/release/no-thanks-v${{ steps.version.outputs.version }}.apk
           if-no-files-found: error
+
+      # ── Create GitHub Release and attach APK (manual dispatch only) ─────────
+      # Uses the pre-installed `gh` CLI — no extra action needed (no SHA pinning required).
+      # --generate-notes auto-writes release notes from PRs/commits since the last tag.
+      - name: Create GitHub Release
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          APK="app/build/outputs/apk/release/no-thanks-v${VERSION}.apk"
+
+          gh release create "v${VERSION}" \
+            --title "No, thanks! v${VERSION}" \
+            --generate-notes \
+            --latest \
+            "${APK}#No, thanks! v${VERSION} — Android APK"
+
+          echo "✅ GitHub Release v${VERSION} created with APK attached."
