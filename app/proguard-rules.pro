@@ -24,7 +24,16 @@
 # via reflection at runtime. If R8 renames them the JSON won't deserialize.
 -keep class com.github.codebydusk.nothanks.data.ExcuseResponse { *; }
 -keep class com.google.gson.** { *; }
+-keep class com.google.gson.reflect.TypeToken { *; }
+# R8 strips the generic type signature off anonymous TypeToken<T>(){} subclasses,
+# causing: "TypeToken must be created with a type argument ... generic signatures".
+# Keeping all TypeToken subclasses prevents this.
+-keep class * extends com.google.gson.reflect.TypeToken
+# Anonymous inner classes (TypeToken<T>(){}) need InnerClasses attribute preserved
+# so that Gson can reflectively resolve the type argument T at runtime.
+-keepattributes InnerClasses
 -dontwarn sun.misc.**
+
 
 ##── OkHttp (Retrofit dependency) ─────────────────────────────────────────────
 -dontwarn okhttp3.**
