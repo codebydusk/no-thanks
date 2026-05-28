@@ -2,6 +2,10 @@
 
 A minimal Android home screen widget that serves you random excuses to gracefully say "no" — powered by the [No as a Service](https://github.com/hotheadhacker/no-as-a-service) API.
 
+## Download
+
+> **Pre-built APK coming soon.** For now, build from source using the instructions below.
+
 ## Features
 
 ### Widget
@@ -13,16 +17,65 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 - **Previous button** (←) to browse through your last 10 excuses (toggle-able in settings)
 - **Tap to copy** or **dedicated copy button** — configurable in settings
 - **Hilarious copy confirmation** shown for 2 seconds after copying (randomly chosen from 10 messages)
-- **Theme-matched loading messages** — funny quips while the API is being called (no boring spinner)
+- **Theme-matched loading messages** — funny quips while the API is being called, no boring spinner
 - **Sarcastic fallback messages** when the API is unreachable
 
 ### Settings App
 
-- **Appearance** — System / Light / Dark mode
-- **Widget Theme** — Blueprint, Material, Nothing OS, Samsung One UI, OnePlus
+- **Appearance** — System default / Light / Dark
+- **Widget Theme** — 5 themes: Blueprint, Material, Nothing OS, Samsung One UI, OnePlus
 - **Corner Style** — Pill / Rounded / Sharp
-- **Copy Mechanism** — Tap text or show a dedicated copy button
+- **Copy Mechanism** — Tap text to copy, or show a dedicated copy button
 - **Navigation** — Toggle the previous (←) button on/off
+
+## Widget Themes
+
+| Theme | Style | Light Mode | Dark Mode |
+| --- | --- | --- | --- |
+| **Blueprint** *(default)* | Digital Blue palette | Light blue (`#E5F0FF`) bg · navy (`#002966`) text · blue (`#0052CC`) accent | Near-black (`#000E24`) bg · sky-blue (`#CCE0FF`) text · vivid blue (`#3385FF`) accent |
+| **Material** | MD3 standard | Light surface (`#FFFBFE`) · dark text | Dark surface (`#1C1B1F`) · light text |
+| **Nothing OS** | Dot-matrix monospace | White bg · black text · **red** (`#D71921`) refresh icon | Black bg · white text · **red** refresh icon |
+| **Samsung One UI** | Rounded sans-serif | Warm light (`#F7F7F7`) bg · dark text · Samsung blue accent | Warm dark (`#1A1A1A`) bg · light text · blue accent |
+| **OnePlus (OxygenOS)** | Clean minimal | Near-white (`#FAFAFA`) bg · dark text · **red** (`#F6000D`) refresh icon | Near-black (`#0F0F0F`) bg · light text · **red** refresh icon |
+
+> Each theme automatically adapts to your device's system dark/light preference unless you override it in settings.
+
+## Corner Styles
+
+| Style | Corner Radius | Description |
+| --- | --- | --- |
+| **Pill** | 50 dp | Fully rounded, pill/capsule shape |
+| **Rounded** | 8 dp | Gentle, Samsung-style corner rounding |
+| **Sharp** | 0 dp | True square with zero rounding |
+
+## Appearance Modes
+
+| Mode | Behaviour |
+| --- | --- |
+| **System** | Follows the device's light/dark setting automatically |
+| **Light** | Always uses the light variant of the selected theme |
+| **Dark** | Always uses the dark variant of the selected theme |
+
+## Copy Mechanism
+
+| Option | Behaviour |
+| --- | --- |
+| **Tap text** | Tap anywhere on the excuse text to copy it to the clipboard |
+| **Copy button** | Shows a dedicated copy icon (📋) next to the refresh button |
+
+> The "No, thanks!" prefix is **not** copied — only the raw excuse text goes to the clipboard.
+
+## Copy Confirmations
+
+After copying, one of these messages is shown at random for 2 seconds:
+
+| | |
+| --- | --- |
+| That's a copy, Houston. 📋 | Snagged! Use it wisely. |
+| Ctrl+C executed. Godspeed. | In your clipboard. No refunds. |
+| Excuse extracted with prejudice. | Pasted into your soul. 🌀 |
+| That excuse is now legally yours. | Copy secured. Mission complete. |
+| Yours now. Don't abuse it. | Clipboard hijacked. You're welcome. |
 
 ## Screenshots
 
@@ -83,13 +136,15 @@ Response:
 - JDK 11+
 - An Android device or emulator (API 26+)
 
-### Build
+### Build debug APK
 
 ```bash
 ./gradlew assembleDebug
 ```
 
-### Install on a connected device
+Output: `app/build/outputs/apk/debug/app-debug.apk`
+
+### Install directly on a connected device
 
 ```bash
 ./gradlew installDebug
@@ -100,25 +155,8 @@ Response:
 1. Open the **No, thanks!** app once to initialize settings
 2. Long-press on your home screen → **Widgets**
 3. Find **No, thanks!** and drag it to your home screen
-4. Resize to 4×1 (compact) or 4×2 (expanded with scrollable text)
-
-## Widget Themes
-
-| Theme | Style | Dark Mode | Light Mode |
-| --- | --- | --- | --- |
-| **Blueprint** *(default)* | Digital Blue palette | Near-black (#000E24) bg, sky-blue (#CCE0FF) text, vivid blue (#3385FF) accent | Light blue (#E5F0FF) bg, deep navy (#002966) text, brand blue (#0052CC) accent |
-| **Material** | MD3 standard | Dark surface (#1C1B1F), light text | Light surface (#FFFBFE), dark text |
-| **Nothing OS** | Monospace, dot-matrix | Pure black, white text, **red** (#D71921) refresh | Pure white, black text, red refresh |
-| **Samsung One UI** | Rounded sans-serif | Warm dark (#1A1A1A), warm light text, blue accent | Warm light (#F7F7F7), dark text, Samsung blue accent |
-| **OnePlus** | Clean OxygenOS | Near-black (#0F0F0F), light text, **red** (#F6000D) refresh | Near-white (#FAFAFA), dark text, red refresh |
-
-## Corner Styles
-
-| Style | Radius | Look |
-| --- | --- | --- |
-| **Pill** | 50dp | Fully rounded pill shape |
-| **Rounded** | 8dp | Gentle Samsung-style corners |
-| **Sharp** | 0dp | True square, no rounding |
+4. Resize to **4×1** (compact, up to 3 lines) or **4×2** (expanded, scrollable)
+5. Open the app to change theme, corner style, appearance, and copy behaviour
 
 ## Credits
 
