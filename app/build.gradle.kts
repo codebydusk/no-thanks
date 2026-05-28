@@ -22,20 +22,27 @@ android {
     }
 
     signingConfigs {
-        // Reads keystore from CI environment. storeFile = null → unsigned APK for local builds.
+        // Populated only when release.keystore exists (i.e. in CI after the decode step).
+        // storeFile stays null locally → signingConfig is not wired in → unsigned APK, no crash.
         create("release") {
             val keystoreFile = rootProject.file("release.keystore")
-            storeFile = if (keystoreFile.exists()) keystoreFile else null
-            storePassword = System.getenv("STORE_PASSWORD") ?: ""
-            keyAlias    = System.getenv("KEY_ALIAS")       ?: ""
-            keyPassword = System.getenv("KEY_PASSWORD")    ?: ""
+            storeFile      = keystoreFile.takeIf { it.exists() }
+            storePassword  = System.getenv("STORE_PASSWORD") ?: ""
+            keyAlias       = System.getenv("KEY_ALIAS")       ?: ""
+            keyPassword    = System.getenv("KEY_PASSWORD")    ?: ""
         }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
-            // Production mode: R8 shrinks, minifies and obfuscates — equivalent to a PROD build.
+            // Only attach the signing config when the keystore is present.
+            // Locally: produces app-release-unsigned.apk (fine for dev installs via ADB).
+            // In CI:   keystore is decoded first → produces app-release.apk (signed, installable).
+            val keystoreFile = rootProject.file("release.keystore")
+            if (keystoreFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
+            // Production mode: R8 shrinks, minifies and obfuscates.
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
