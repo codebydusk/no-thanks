@@ -1,6 +1,15 @@
-name: Android CI
+name: Android Release
 
 on:
+  # ── Manual trigger from the GitHub Actions UI ──────────────────────────────
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version name (e.g. 1.0.0). Leave blank to use the one in build.gradle.'
+        required: false
+        default: ''
+
+  # ── Also runs on every push to main (CI smoke-test only, no upload) ─────────
   push:
     branches: [ "main" ]
   pull_request:
@@ -8,24 +17,62 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: set up JDK 11
-      uses: actions/setup-java@v4
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
+      # ── Source ──────────────────────────────────────────────────────────────
+      # SECURITY: Pinned to a full commit SHA to prevent supply-chain attacks
+      # via mutable tags (e.g. trivy-action compromise).
+      # actions/checkout v4.2.2 — verify at https://github.com/actions/checkout/releases/tag/v4.2.2
+      - name: Checkout source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: no-thanks-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+      # ── Java ────────────────────────────────────────────────────────────────
+      # actions/setup-java v4.7.0 — verify at https://github.com/actions/setup-java/releases/tag/v4.7.0
+      - name: Set up JDK 17
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      # ── Optional: override versionName from workflow input ──────────────────
+      - name: Override versionName (if provided)
+        if: ${{ github.event.inputs.version_name != '' }}
+        run: |
+          sed -i 's/versionName = "[^"]*"/versionName = "${{ github.event.inputs.version_name }}"/' app/build.gradle.kts
+          echo "versionName overridden to ${{ github.event.inputs.version_name }}"
+
+      # ── Gradle permissions ──────────────────────────────────────────────────
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # ── Build release APK ───────────────────────────────────────────────────
+      # assembleRelease = production mode (R8 minification + resource shrinking).
+      # Equivalent to `npm run build --mode=production`.
+      - name: Build release APK
+        run: ./gradlew assembleRelease
+
+      # ── Resolve the versioned filename ──────────────────────────────────────
+      - name: Get version name
+        id: version
+        run: |
+          VERSION=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Resolved version: $VERSION"
+
+      # ── Rename APK to no-thanks-v{VERSION}.apk ─────────────────────────────
+      - name: Rename APK
+        run: |
+          mv app/build/outputs/apk/release/app-release-unsigned.apk \
+             app/build/outputs/apk/release/no-thanks-v${{ steps.version.outputs.version }}.apk
+
+      # ── Upload artifact (only on manual dispatch or main push) ─────────────
+      # actions/upload-artifact v4.6.2 — verify at https://github.com/actions/upload-artifact/releases/tag/v4.6.2
+      - name: Upload release APK
+        if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: no-thanks-v${{ steps.version.outputs.version }}
+          path: app/build/outputs/apk/release/no-thanks-v${{ steps.version.outputs.version }}.apk
+          if-no-files-found: error

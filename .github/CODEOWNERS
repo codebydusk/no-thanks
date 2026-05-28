@@ -1,0 +1,4 @@
+# Any change to workflow files requires explicit review from a repo owner.
+# This prevents an attacker who gains write access (e.g. via a compromised
+# dependency PR) from silently merging a backdoor workflow like discussion.yaml.
+.github/workflows/ @codebydusk
