@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Adaptive icon foreground — prohibition sign (🚫) design.
+  Adaptive icon foreground — speech bubble with diagonal slash.
 
-  CONCEPT: A light-blue badge circle. On top: a dark navy "no-entry" ring (thick
-  donut) with a diagonal slash bar — universally recognisable as "NO" without any
-  text. The symbol is drawn in solid navy so it pops on the navy background.
+  SAFE ZONE MATHS:
+    Before scaling, the bubble tail tip sits at (23,80) — ~40dp from icon centre.
+    The outer group scales everything to 0.75×, shrinking it to ≤31dp from centre,
+    well inside Android's 33dp content safe zone (visible in all launcher shapes).
 
-  All content is within ~35dp of centre (54,54), safely inside every launcher
-  mask shape (Android safe zone = 33dp radius from centre).
-
-  Ring: outer r=32, inner r=20, stroke=12dp (bold, legible at small sizes)
-  Slash: 10dp wide bar, rotated 45° clockwise (upper-left → lower-right direction)
+  SLASH: 8dp wide, rotation -45° (top-left → bottom-right, i.e. "\" direction).
+  SLASH COLOUR: matches the badge (#CCE0FF) so it reads as a cut-through window
+  in the navy bubble rather than an added stripe.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -18,28 +17,57 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- 1. Light-blue badge circle (radius 36, the "border" of the badge) -->
+    <!-- 1. Light-blue badge circle (radius 36, fills behind everything) -->
     <path
         android:fillColor="#CCE0FF"
         android:pathData="M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z"/>
 
-    <!-- 2. Navy prohibition ring: evenOdd donut (outer r=32, inner r=20) -->
-    <path
-        android:fillColor="#002966"
-        android:fillType="evenOdd"
-        android:pathData="
-            M54,22 A32,32 0 0 1 54,86 A32,32 0 0 1 54,22 Z
-            M54,34 A20,20 0 0 1 54,74 A20,20 0 0 1 54,34 Z
-        "/>
-
-    <!-- 3. Navy diagonal slash bar (10dp wide, 68dp tall, rotated 45° clockwise) -->
+    <!--
+      2 + 3. Bubble body and slash, scaled to 0.75× around icon centre (54,54).
+             This shrinks all content to ≤31dp from centre — safe for every launcher.
+    -->
     <group
+        android:scaleX="0.75"
+        android:scaleY="0.75"
         android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="45">
+        android:pivotY="54">
+
+        <!--
+          Speech bubble: rounded rect (r=9) + tail pointing bottom-left.
+            Body corners: TL=(37,24) TR=(71,24) BR=(71,68) BL=(37,68)
+            Tail exits bottom edge at x=48, tip at (23,80), returns to arc start (37,68).
+        -->
         <path
             android:fillColor="#002966"
-            android:pathData="M49,20 H59 V88 H49 Z"/>
+            android:pathData="
+                M37,24
+                L71,24
+                Q80,24 80,33
+                L80,59
+                Q80,68 71,68
+                L48,68
+                L23,80
+                L37,68
+                Q28,68 28,59
+                L28,33
+                Q28,24 37,24
+                Z
+            "/>
+
+        <!--
+          Slash: 8dp wide, rotated -45° (\ direction) around bubble centre (54,46).
+          Light-blue fill matches badge → appears as a transparent window in the bubble.
+          Bar height 64dp (y=14..78) → corners reach ~32dp from pivot before scaling.
+        -->
+        <group
+            android:pivotX="54"
+            android:pivotY="46"
+            android:rotation="-45">
+            <path
+                android:fillColor="#CCE0FF"
+                android:pathData="M50,14 H58 V78 H50 Z"/>
+        </group>
+
     </group>
 
 </vector>

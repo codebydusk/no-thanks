@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Adaptive icon foreground — night mode.
-  Same prohibition sign, brighter badge (#E5F0FF) + deeper slash/ring (#000E24)
-  for maximum contrast against the near-black #000E24 background.
+  Night-mode foreground — same speech-bubble+slash design.
+  0.75× content scale, -45° slash, 8dp width.
+  Brighter badge (#E5F0FF) + near-black symbol (#000E24) for dark-mode contrast.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -10,28 +10,46 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Badge circle (brighter in dark mode) -->
+    <!-- Badge circle -->
     <path
         android:fillColor="#E5F0FF"
         android:pathData="M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z"/>
 
-    <!-- Prohibition ring -->
-    <path
-        android:fillColor="#000E24"
-        android:fillType="evenOdd"
-        android:pathData="
-            M54,22 A32,32 0 0 1 54,86 A32,32 0 0 1 54,22 Z
-            M54,34 A20,20 0 0 1 54,74 A20,20 0 0 1 54,34 Z
-        "/>
-
-    <!-- Diagonal slash -->
+    <!-- Scaled content group (0.75× around icon centre) -->
     <group
+        android:scaleX="0.75"
+        android:scaleY="0.75"
         android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="45">
+        android:pivotY="54">
+
+        <!-- Speech bubble -->
         <path
             android:fillColor="#000E24"
-            android:pathData="M49,20 H59 V88 H49 Z"/>
+            android:pathData="
+                M37,24
+                L71,24
+                Q80,24 80,33
+                L80,59
+                Q80,68 71,68
+                L48,68
+                L23,80
+                L37,68
+                Q28,68 28,59
+                L28,33
+                Q28,24 37,24
+                Z
+            "/>
+
+        <!-- Slash (\, -45°, 8dp wide) -->
+        <group
+            android:pivotX="54"
+            android:pivotY="46"
+            android:rotation="-45">
+            <path
+                android:fillColor="#E5F0FF"
+                android:pathData="M50,14 H58 V78 H50 Z"/>
+        </group>
+
     </group>
 
 </vector>

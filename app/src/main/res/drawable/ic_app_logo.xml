@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Settings page flat logo — same prohibition sign design, self-contained.
-  Background: rounded square in Digital Blue 800 (#002966)
-  Badge: Digital Blue 100 (#CCE0FF) circle
-  Symbol: prohibition ring + slash in navy (#002966)
+  Settings page flat logo — speech bubble + slash, self-contained.
+  Same 0.75× scale, -45° slash, 8dp width as the adaptive icon foreground.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -11,33 +9,51 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Rounded background square -->
+    <!-- Rounded background square (Digital Blue 800) -->
     <path
         android:fillColor="#FF002966"
         android:pathData="M18,0 H90 Q108,0 108,18 V90 Q108,108 90,108 H18 Q0,108 0,90 V18 Q0,0 18,0 Z"/>
 
-    <!-- Light badge circle -->
+    <!-- Badge circle -->
     <path
         android:fillColor="#CCE0FF"
         android:pathData="M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z"/>
 
-    <!-- Prohibition ring -->
-    <path
-        android:fillColor="#002966"
-        android:fillType="evenOdd"
-        android:pathData="
-            M54,22 A32,32 0 0 1 54,86 A32,32 0 0 1 54,22 Z
-            M54,34 A20,20 0 0 1 54,74 A20,20 0 0 1 54,34 Z
-        "/>
-
-    <!-- Diagonal slash -->
+    <!-- Scaled content group -->
     <group
+        android:scaleX="0.75"
+        android:scaleY="0.75"
         android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="45">
+        android:pivotY="54">
+
+        <!-- Speech bubble -->
         <path
             android:fillColor="#002966"
-            android:pathData="M49,20 H59 V88 H49 Z"/>
+            android:pathData="
+                M37,24
+                L71,24
+                Q80,24 80,33
+                L80,59
+                Q80,68 71,68
+                L48,68
+                L23,80
+                L37,68
+                Q28,68 28,59
+                L28,33
+                Q28,24 37,24
+                Z
+            "/>
+
+        <!-- Slash (\, -45°, 8dp wide) -->
+        <group
+            android:pivotX="54"
+            android:pivotY="46"
+            android:rotation="-45">
+            <path
+                android:fillColor="#CCE0FF"
+                android:pathData="M50,14 H58 V78 H50 Z"/>
+        </group>
+
     </group>
 
 </vector>

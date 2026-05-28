@@ -1,6 +1,15 @@
+<div align="center">
+
+![No, thanks! banner](assets/banner.png)
+
 # No, thanks!
 
+*The excuse widget you never knew you needed.*
+
+</div>
+
 A minimal Android home screen widget that serves you random excuses to gracefully say "no" — powered by the [No as a Service](https://github.com/hotheadhacker/no-as-a-service) API.
+
 
 ## Download
 
