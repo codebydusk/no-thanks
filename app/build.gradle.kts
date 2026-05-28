@@ -15,14 +15,26 @@ android {
         applicationId = "com.github.codebydusk.nothanks"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        // Reads keystore from CI environment. storeFile = null → unsigned APK for local builds.
+        create("release") {
+            val keystoreFile = rootProject.file("release.keystore")
+            storeFile = if (keystoreFile.exists()) keystoreFile else null
+            storePassword = System.getenv("STORE_PASSWORD") ?: ""
+            keyAlias    = System.getenv("KEY_ALIAS")       ?: ""
+            keyPassword = System.getenv("KEY_PASSWORD")    ?: ""
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             // Production mode: R8 shrinks, minifies and obfuscates — equivalent to a PROD build.
             isMinifyEnabled = true
             isShrinkResources = true
@@ -32,6 +44,7 @@ android {
             )
         }
     }
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

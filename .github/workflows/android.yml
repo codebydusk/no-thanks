@@ -53,10 +53,26 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # ── Build release APK ───────────────────────────────────────────────────
-      # assembleRelease = production mode (R8 minification + resource shrinking).
-      # Equivalent to `npm run build --mode=production`.
+      # ── Decode signing keystore from GitHub Secret ──────────────────────────
+      # The secret KEYSTORE_BASE64 holds the base64-encoded .keystore file.
+      # If the secret is absent (e.g. fork PRs), this step is skipped and
+      # Gradle produces an unsigned APK (storeFile = null in build.gradle.kts).
+      - name: Decode keystore
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > release.keystore
+          echo "✅ Keystore decoded."
+
+      # ── Build release APK (R8 + signing) ────────────────────────────────────
+      # assembleRelease = production mode (R8 minification + resource shrinking + signing).
+      # Signing credentials come from environment variables read in build.gradle.kts.
       - name: Build release APK
+        env:
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS:      ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD:   ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew assembleRelease
 
       # ── Resolve the versioned filename ──────────────────────────────────────
@@ -65,16 +81,19 @@ jobs:
         run: |
           VERSION=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "apk_name=no-thanks-v${VERSION}.apk" >> $GITHUB_OUTPUT
           echo "Resolved version: $VERSION"
 
       # ── Rename APK to no-thanks-v{VERSION}.apk ─────────────────────────────
+      # Find whichever APK Gradle produced (signed → app-release.apk,
+      # unsigned → app-release-unsigned.apk) and give it the versioned name.
       - name: Rename APK
         run: |
-          mv app/build/outputs/apk/release/app-release-unsigned.apk \
-             app/build/outputs/apk/release/no-thanks-v${{ steps.version.outputs.version }}.apk
+          APK_PATH=$(find app/build/outputs/apk/release/ -name "*.apk" | head -1)
+          echo "Found APK: $APK_PATH"
+          mv "$APK_PATH" \
+             "app/build/outputs/apk/release/no-thanks-v${{ steps.version.outputs.version }}.apk"
 
-      # ── Upload workflow artifact (available for every build) ────────────────
+      # ── Upload workflow artifact ─────────────────────────────────────────────
       # actions/upload-artifact v4.6.2 — verify at https://github.com/actions/upload-artifact/releases/tag/v4.6.2
       - name: Upload APK artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
