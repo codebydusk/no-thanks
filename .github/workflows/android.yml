@@ -1,19 +1,13 @@
 name: Android Release
 
 on:
-  # ── Manual trigger from the GitHub Actions UI ──────────────────────────────
+  # ── Manual trigger only — runs when you click "Run workflow" in GitHub Actions UI ──
   workflow_dispatch:
     inputs:
       version_name:
-        description: 'Version name (e.g. 1.0.0). Leave blank to use the one in build.gradle.'
+        description: 'Version name (e.g. 1.0.1). Leave blank to use the one in build.gradle.'
         required: false
         default: ''
-
-  # ── CI smoke-test on every push / PR to main (no release created) ──────────
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 # Allow the job to create GitHub Releases and upload assets
 permissions:
