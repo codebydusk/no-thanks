@@ -116,7 +116,11 @@ class NoThanksWidget : GlanceAppWidget() {
             else -> 10.dp
         }
         // Extra horizontal breathing room so text never butts against the edges
-        val hPadding = padding + 8.dp
+        // Pill style needs more breathing room for the curved edges
+        val hPadding = when {
+            cornerStyle == ExcuseRepository.CORNER_ROUND -> padding + 16.dp
+            else -> padding + 8.dp
+        }
 
         val fontSize = when (theme) {
             ExcuseRepository.THEME_NOTHING   -> 16.sp
