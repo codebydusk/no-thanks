@@ -74,23 +74,27 @@ class NoThanksWidget : GlanceAppWidget() {
             val darkModeSetting by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)
             val copyMechanism by repository.copyMechanismFlow.collectAsState(initial = ExcuseRepository.COPY_TAP)
             val showPrevButton by repository.showPrevButtonFlow.collectAsState(initial = true)
+            val textSize by repository.textSizeFlow.collectAsState(initial = ExcuseRepository.TEXT_SIZE_NORMAL)
+            val includeCopyPrefix by repository.copyPrefixFlow.collectAsState(initial = false)
 
             val isDark = resolveDarkMode(darkModeSetting, LocalContext.current)
             val size = LocalSize.current
 
             WidgetContent(
                 // Prepend "No, thanks!" only to real API text — not loading quips or copy confirmations
+                // Only include prefix if Copy Prefix setting is enabled
                 text = when {
                     isCopied  -> copiedMsg
                     isLoading -> currentText
-                    else      -> "No, thanks! $currentText"
+                    else      -> if (includeCopyPrefix) "No, thanks! $currentText" else currentText
                 },
                 theme = theme,
                 cornerStyle = cornerStyle,
                 isDark = isDark,
                 copyMechanism = copyMechanism,
                 isExpanded = size.height >= SIZE_4x2.height,
-                showPrevButton = showPrevButton
+                showPrevButton = showPrevButton,
+                textSize = textSize
             )
         }
     }
@@ -103,7 +107,8 @@ class NoThanksWidget : GlanceAppWidget() {
         isDark: Boolean,
         copyMechanism: String,
         isExpanded: Boolean,
-        showPrevButton: Boolean
+        showPrevButton: Boolean,
+        textSize: String
     ) {
         val themeColors = resolveThemeColors(theme, isDark)
         val backgroundColor = themeColors.background
@@ -127,6 +132,13 @@ class NoThanksWidget : GlanceAppWidget() {
             ExcuseRepository.THEME_SAMSUNG   -> 17.sp
             ExcuseRepository.THEME_NOTHANKS  -> 17.sp
             else -> 18.sp
+        }
+
+        // Apply text size scale multiplier
+        val scaledFontSize = when (textSize) {
+            ExcuseRepository.TEXT_SIZE_SMALL -> fontSize * 0.85f
+            ExcuseRepository.TEXT_SIZE_LARGE -> fontSize * 1.25f
+            else -> fontSize  // TEXT_SIZE_NORMAL
         }
 
         val fontWeight = when (theme) {
@@ -202,7 +214,7 @@ class NoThanksWidget : GlanceAppWidget() {
                                         text = text,
                                         style = TextStyle(
                                             color = ColorProvider(foregroundColor),
-                                            fontSize = fontSize,
+                                            fontSize = scaledFontSize,
                                             fontWeight = fontWeight,
                                             fontFamily = fontFamily
                                         )
@@ -217,7 +229,7 @@ class NoThanksWidget : GlanceAppWidget() {
                                 text = text,
                                 style = TextStyle(
                                     color = ColorProvider(foregroundColor),
-                                    fontSize = fontSize,
+                                    fontSize = scaledFontSize,
                                     fontWeight = fontWeight,
                                     fontFamily = fontFamily
                                 ),
@@ -259,20 +271,20 @@ class NoThanksWidget : GlanceAppWidget() {
      * Returns ThemeColors(background, foreground, accent) for the given theme + dark-mode.
      *
      * Theme philosophy:
-     *  Nothing OS  → near-black/off-white high-contrast body, Nothing red accent (both modes)
+     *  Nothing OS  → grey/white high-contrast body, Nothing red accent (both modes)
      *  Samsung      → warm off-tones, Samsung blue accent (bright in light, lighter in dark)
      *  OnePlus      → near-black/off-white body, OnePlus red accent (both modes)
      *  Material     → standard M3 surface tones, Material purple accent
      */
     private fun resolveThemeColors(theme: String, isDark: Boolean): ThemeColors = when (theme) {
         ExcuseRepository.THEME_NOTHING -> if (isDark) ThemeColors(
-            background = ComposeColor(0xFF0F0F0F),  // Near-black
-            foreground = ComposeColor(0xFFFAFAFA),  // Off-white
-            accent     = ComposeColor(0xFFD71921)   // Nothing red
+            background = ComposeColor(0xFF1B1B1D),  // Light grey background
+            foreground = ComposeColor(0xFFF5F3F7),  // White
+            accent     = ComposeColor(0xFFD81921)   // Nothing red
         ) else ThemeColors(
             background = ComposeColor(0xFFFAFAFA),  // Off-white
-            foreground = ComposeColor(0xFF1A1A1A),  // Near-black
-            accent     = ComposeColor(0xFFD71921)   // Nothing red
+            foreground = ComposeColor(0xFF5C5C60),  // Grey
+            accent     = ComposeColor(0xFFD81921)   // Nothing red
         )
 
         ExcuseRepository.THEME_SAMSUNG -> if (isDark) ThemeColors(

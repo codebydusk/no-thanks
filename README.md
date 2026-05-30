@@ -29,6 +29,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| [v1.0.1](https://github.com/codebydusk/no-thanks/releases/tag/v1.0.1) | May 31, 2026 | Added text size adjustment (Small/Normal/Large) · Added emojis to loading and copy confirmation messages · Updated Copy Prefix description to clarify on/off behavior · "No, thanks!" prefix now respects Copy Prefix setting in widget display |
 | [v1.0.0](https://github.com/codebydusk/no-thanks/releases/tag/v1.0) | May 30, 2026 | Initial release |
 
 > Older releases are always available on the [GitHub Releases page](https://github.com/codebydusk/no-thanks/releases).
@@ -45,8 +46,8 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 - **Previous button** (←) to browse through your last 10 excuses (toggle-able in settings)
 - **Tap to copy** or **dedicated copy button** — configurable in settings
 - **Copy with or without prefix** — toggle whether "No, thanks!" is included in copied text
-- **Hilarious copy confirmation** shown for 2 seconds after copying (randomly chosen from 10 messages)
-- **Theme-matched loading messages** — funny quips while the API is being called, no boring spinner
+- **Hilarious copy confirmation with emojis** shown for 2 seconds after copying (randomly chosen from 10 messages)
+- **Themed loading messages with emojis** — fun quips while the API is being called, no boring spinner
 - **Sarcastic fallback messages** when the API is unreachable
 
 ### Settings App
@@ -54,6 +55,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 - **Appearance** — System default / Light / Dark
 - **Widget Theme** — 5 themes: Blueprint, Material, Nothing OS, Samsung One UI, OnePlus
 - **Corner Style** — Pill / Rounded / Sharp
+- **Text Size** — Small / Normal / Large
 - **Copy Mechanism** — Tap text to copy, or show a dedicated copy button
 - **Copy Prefix** — Toggle whether "No, thanks!" is included when copying
 - **Navigation** — Toggle the previous (←) button on/off
@@ -64,7 +66,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 | --- | --- | --- | --- |
 | **Blueprint** *(default)* | Digital Blue palette | Light blue (`#E5F0FF`) bg · navy (`#002966`) text · blue (`#0052CC`) accent | Near-black (`#000E24`) bg · sky-blue (`#CCE0FF`) text · vivid blue (`#3385FF`) accent |
 | **Material** | MD3 standard | Light surface (`#FFFBFE`) · dark text | Dark surface (`#1C1B1F`) · light text |
-| **Nothing OS** | Dot-matrix monospace | Off-white (`#FAFAFA`) bg · near-black (`#1A1A1A`) text · **red** (`#D71921`) refresh icon | Near-black (`#0F0F0F`) bg · off-white (`#FAFAFA`) text · **red** refresh icon |
+| **Nothing OS** | Dot-matrix monospace | Off-white (`#FAFAFA`) bg · grey (`#5C5C60`) text · **red** (`#D81921`) refresh icon | Light grey (`#1B1B1D`) bg · white (`#F5F3F7`) text · **red** refresh icon |
 | **Samsung One UI** | Rounded sans-serif | Warm light (`#F7F7F7`) bg · dark text · bright blue (`#0066FF`) accent | Warm dark (`#1A1A1A`) bg · light text · light blue (`#4B9FFF`) accent |
 | **OnePlus (OxygenOS)** | Clean minimal | Near-white (`#FAFAFA`) bg · dark text · **red** (`#F6000D`) refresh icon | Near-black (`#0F0F0F`) bg · light text · **red** refresh icon |
 
@@ -79,6 +81,16 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 | **Sharp*** | 0 dp | True square with zero rounding |
 
 > *Sharp corners may appear rounded on some launchers due to system-level widget rounding that cannot be overridden by the app.
+
+## Text Size
+
+| Size | Scale | Description |
+| --- | --- | --- |
+| **Small** | 85% | Compact text size for fitting more content |
+| **Normal** *(default)* | 100% | Standard readable text size |
+| **Large** | 125% | Enlarged text for better readability |
+
+> Text size scales proportionally across all themes while maintaining visual consistency.
 
 ## Appearance Modes
 
@@ -99,15 +111,47 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 ## Copy Confirmations
 
-After copying, one of these messages is shown at random for 2 seconds:
+After copying, one of these emoji-filled messages is shown at random for 2 seconds:
 
 | | |
 | --- | --- |
-| That's a copy, Houston. 📋 | Snagged! Use it wisely. |
-| Ctrl+C executed. Godspeed. | In your clipboard. No refunds. |
-| Excuse extracted with prejudice. | Pasted into your soul. 🌀 |
-| That excuse is now legally yours. | Copy secured. Mission complete. |
-| Yours now. Don't abuse it. | Clipboard hijacked. You're welcome. |
+| That's a copy, Houston. 📋 | Snagged! Use it wisely. 🏯 |
+| Ctrl+C executed. Godspeed. ⚡ | In your clipboard. No refunds. 📱 |
+| Excuse extracted with prejudice. 🔪 | Pasted into your soul. 🌀 |
+| That excuse is now legally yours. ⚖️ | Copy secured. Mission complete. ✅ |
+| Yours now. Don't abuse it. 🤐 | Clipboard hijacked. You're welcome. 😎 |
+
+## Theme-Specific Loading Messages
+
+While fetching excuses, theme-appropriate loading messages with emojis appear:
+
+### Nothing OS 🎯
+- 📡 signal: searching...
+- 🔊 beep. boop. thinking.
+- // excuse.render() 💻
+- ⏳ nothing to show yet...
+- ✨ glyphs assembling...
+
+### Samsung One UI 🌟
+- 🤖 asking Bixby nicely...
+- 🌌 Galaxy AI generating...
+- 📡 SmartThings: working...
+- 🎨 One UI loading excuse...
+- ✨ Refreshed. Free RAM: 2.4KB!
+
+### OnePlus (OxygenOS) ⚡
+- 🚀 Never Settle... hold on!
+- ⚡ Warp charging excuse...
+- 🧠 OxygenOS AI processing...
+- 🔔 Alert Slider: maybe?
+- 🏆 Flagship loading...™
+
+### Material Design 📚
+- 📚 consulting MD3...
+- 🌈 dynamic color: active
+- 💧 ripple effect running
+- 📄 applying elevation...
+- 🎨 Material You: thinking...
 
 ## Screenshots
 

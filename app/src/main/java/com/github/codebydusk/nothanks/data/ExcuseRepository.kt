@@ -35,6 +35,7 @@ class ExcuseRepository(private val context: Context) {
         val COPY_MECHANISM_KEY = stringPreferencesKey("copy_mechanism")
         val SHOW_PREV_BUTTON_KEY = booleanPreferencesKey("show_prev_button")
         val COPY_PREFIX_KEY = booleanPreferencesKey("copy_prefix")
+        val TEXT_SIZE_KEY = stringPreferencesKey("text_size")
 
         // Dark mode values
         const val DARK_MODE_SYSTEM = "SYSTEM"
@@ -57,6 +58,11 @@ class ExcuseRepository(private val context: Context) {
         const val COPY_TAP = "TAP"
         const val COPY_BUTTON = "BUTTON"
 
+        // Text size values
+        const val TEXT_SIZE_SMALL = "SMALL"
+        const val TEXT_SIZE_NORMAL = "NORMAL"
+        const val TEXT_SIZE_LARGE = "LARGE"
+
         // Sarcastic fallback messages for API failure
         val FALLBACK_MESSAGES = listOf(
             "We ran out of excuses today. Please try again.",
@@ -72,15 +78,15 @@ class ExcuseRepository(private val context: Context) {
         // Hilarious messages shown when text is copied to clipboard
         val COPIED_MESSAGES = listOf(
             "That's a copy, Houston. 📋",
-            "Snagged! Use it wisely.",
-            "Ctrl+C executed. Godspeed.",
-            "In your clipboard. No refunds.",
-            "Excuse extracted with prejudice.",
+            "Snagged! Use it wisely. 🎯",
+            "Ctrl+C executed. Godspeed. ⚡",
+            "In your clipboard. No refunds. 📱",
+            "Excuse extracted with prejudice. 🔪",
             "Pasted into your soul. 🌀",
-            "That excuse is now legally yours.",
-            "Copy secured. Mission complete.",
-            "Yours now. Don't abuse it.",
-            "Clipboard hijacked. You're welcome."
+            "That excuse is now legally yours. ⚖️",
+            "Copy secured. Mission complete. ✅",
+            "Yours now. Don't abuse it. 🤐",
+            "Clipboard hijacked. You're welcome. 😎"
         )
 
         fun getRandomCopiedMessage(): String = COPIED_MESSAGES[Random.nextInt(COPIED_MESSAGES.size)]
@@ -88,43 +94,43 @@ class ExcuseRepository(private val context: Context) {
         // Theme-specific hilarious loading messages
         private val NOTHING_LOADING = listOf(
             "● ● ● loading ● ● ●",
-            "signal: searching...",
-            "beep. boop. thinking.",
-            "// excuse.render()",
-            "nothing to show yet...",
-            "glyphs assembling...",
-            "dot matrix active!",
-            "glyph interface busy..."
+            "📡 signal: searching...",
+            "🔊 beep. boop. thinking.",
+            "// excuse.render() 💻",
+            "⏳ nothing to show yet...",
+            "✨ glyphs assembling...",
+            "🖥️ dot matrix active!",
+            "⚙️ glyph interface busy..."
         )
 
         private val SAMSUNG_LOADING = listOf(
-            "asking Bixby nicely...",
-            "Galaxy AI generating...",
-            "SmartThings: working...",
-            "One UI loading excuse...",
-            "connecting to Galaxy...",
-            "DeX: excuse incoming...",
-            "Refreshed. Free RAM: 2.4KB!"
+            "🤖 asking Bixby nicely...",
+            "🌌 Galaxy AI generating...",
+            "📡 SmartThings: working...",
+            "🎨 One UI loading excuse...",
+            "🌐 connecting to Galaxy...",
+            "🖥️ DeX: excuse incoming...",
+            "✨ Refreshed. Free RAM: 2.4KB!"
         )
 
         private val ONEPLUS_LOADING = listOf(
-            "Never Settle... hold on!",
-            "Warp charging excuse...",
-            "OxygenOS AI processing...",
-            "Alert Slider: maybe?",
-            "Flagship loading...™",
-            "Pro mode: thinking...",
-            "OnePlus never delays... usually..."
+            "🚀 Never Settle... hold on!",
+            "⚡ Warp charging excuse...",
+            "🧠 OxygenOS AI processing...",
+            "🔕 Alert Slider: maybe?",
+            "🏆 Flagship loading...™",
+            "💎 Pro mode: thinking...",
+            "⏱️ OnePlus never delays... usually..."
         )
 
         private val MATERIAL_LOADING = listOf(
-            "consulting MD3...",
-            "dynamic color: active",
-            "ripple effect running",
-            "applying elevation...",
-            "Material You: thinking...",
-            "following guidelines...",
-            "themed refusal coming..."
+            "📚 consulting MD3...",
+            "🌈 dynamic color: active",
+            "💧 ripple effect running",
+            "📐 applying elevation...",
+            "🎨 Material You: thinking...",
+            "📋 following guidelines...",
+            "🎭 themed refusal coming..."
         )
 
         /**
@@ -243,6 +249,7 @@ class ExcuseRepository(private val context: Context) {
     val copyMechanismFlow: Flow<String> = context.dataStore.data.map { it[COPY_MECHANISM_KEY] ?: COPY_TAP }
     val showPrevButtonFlow: Flow<Boolean> = context.dataStore.data.map { it[SHOW_PREV_BUTTON_KEY] ?: true }
     val copyPrefixFlow: Flow<Boolean> = context.dataStore.data.map { it[COPY_PREFIX_KEY] ?: false }
+    val textSizeFlow: Flow<String> = context.dataStore.data.map { it[TEXT_SIZE_KEY] ?: TEXT_SIZE_NORMAL }
 
     suspend fun updateSetting(key: Preferences.Key<*>, value: Any) {
         context.dataStore.edit { preferences ->
@@ -254,6 +261,7 @@ class ExcuseRepository(private val context: Context) {
                 COPY_MECHANISM_KEY -> preferences[COPY_MECHANISM_KEY] = value as String
                 SHOW_PREV_BUTTON_KEY -> preferences[SHOW_PREV_BUTTON_KEY] = value as Boolean
                 COPY_PREFIX_KEY -> preferences[COPY_PREFIX_KEY] = value as Boolean
+                TEXT_SIZE_KEY -> preferences[TEXT_SIZE_KEY] = value as String
             }
         }
     }

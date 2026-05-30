@@ -68,6 +68,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
     val currentCopyMechanism by repository.copyMechanismFlow.collectAsState(initial = ExcuseRepository.COPY_TAP)
     val showPrevButton by repository.showPrevButtonFlow.collectAsState(initial = true)
     val includeCopyPrefix by repository.copyPrefixFlow.collectAsState(initial = false)
+    val currentTextSize by repository.textSizeFlow.collectAsState(initial = ExcuseRepository.TEXT_SIZE_NORMAL)
 
     val context = androidx.compose.ui.platform.LocalContext.current
 
@@ -192,6 +193,27 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
             }
         }
 
+        // Text Size section
+        item {
+            SettingsSection(title = "Text Size") {
+                val textSizeOptions = listOf(
+                    ExcuseRepository.TEXT_SIZE_SMALL to "Small",
+                    ExcuseRepository.TEXT_SIZE_NORMAL to "Normal",
+                    ExcuseRepository.TEXT_SIZE_LARGE to "Large"
+                )
+                SegmentedOptions(
+                    options = textSizeOptions,
+                    selectedValue = currentTextSize,
+                    onSelect = { value ->
+                        scope.launch {
+                            repository.updateSetting(ExcuseRepository.TEXT_SIZE_KEY, value)
+                            NoThanksWidget().updateAll(context)
+                        }
+                    }
+                )
+            }
+        }
+
         // Copy Mechanism section
         item {
             SettingsSection(title = "Copy Mechanism") {
@@ -226,7 +248,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
-                            text = "Add prefix to copied excuse text",
+                            text = "Include \"No, thanks!\" in copied text when enabled",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -389,7 +411,7 @@ fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () 
             androidx.compose.ui.graphics.Color(0xFF000E24) to androidx.compose.ui.graphics.Color(0xFFCCE0FF)
         }
         ExcuseRepository.THEME_NOTHING -> {
-            androidx.compose.ui.graphics.Color.Black to androidx.compose.ui.graphics.Color(0xFFD71921)
+            androidx.compose.ui.graphics.Color(0xFF1B1B1D) to androidx.compose.ui.graphics.Color(0xFFD81921)
         }
         ExcuseRepository.THEME_SAMSUNG -> {
             androidx.compose.ui.graphics.Color(0xFF1A1A1A) to androidx.compose.ui.graphics.Color(0xFFF7F7F7)
