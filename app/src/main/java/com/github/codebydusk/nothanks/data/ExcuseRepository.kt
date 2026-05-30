@@ -34,6 +34,7 @@ class ExcuseRepository(private val context: Context) {
         val CORNER_STYLE_KEY = stringPreferencesKey("corner_style")
         val COPY_MECHANISM_KEY = stringPreferencesKey("copy_mechanism")
         val SHOW_PREV_BUTTON_KEY = booleanPreferencesKey("show_prev_button")
+        val COPY_PREFIX_KEY = booleanPreferencesKey("copy_prefix")
 
         // Dark mode values
         const val DARK_MODE_SYSTEM = "SYSTEM"
@@ -241,6 +242,7 @@ class ExcuseRepository(private val context: Context) {
     val cornerStyleFlow: Flow<String> = context.dataStore.data.map { it[CORNER_STYLE_KEY] ?: CORNER_ROUND }
     val copyMechanismFlow: Flow<String> = context.dataStore.data.map { it[COPY_MECHANISM_KEY] ?: COPY_TAP }
     val showPrevButtonFlow: Flow<Boolean> = context.dataStore.data.map { it[SHOW_PREV_BUTTON_KEY] ?: true }
+    val copyPrefixFlow: Flow<Boolean> = context.dataStore.data.map { it[COPY_PREFIX_KEY] ?: false }
 
     suspend fun updateSetting(key: Preferences.Key<*>, value: Any) {
         context.dataStore.edit { preferences ->
@@ -251,6 +253,7 @@ class ExcuseRepository(private val context: Context) {
                 CORNER_STYLE_KEY -> preferences[CORNER_STYLE_KEY] = value as String
                 COPY_MECHANISM_KEY -> preferences[COPY_MECHANISM_KEY] = value as String
                 SHOW_PREV_BUTTON_KEY -> preferences[SHOW_PREV_BUTTON_KEY] = value as Boolean
+                COPY_PREFIX_KEY -> preferences[COPY_PREFIX_KEY] = value as Boolean
             }
         }
     }

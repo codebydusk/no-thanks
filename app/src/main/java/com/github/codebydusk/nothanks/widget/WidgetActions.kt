@@ -10,7 +10,9 @@ import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.state.updateAppWidgetState
 import com.github.codebydusk.nothanks.data.ExcuseRepository
+import com.github.codebydusk.nothanks.data.dataStore
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 
 val IS_COPIED_KEY   = booleanPreferencesKey("is_copied")
 val IS_LOADING_KEY  = booleanPreferencesKey("is_loading")
@@ -44,7 +46,6 @@ class HistoryAction : ActionCallback {
     companion object {
         val DIRECTION_KEY = ActionParameters.Key<String>("direction")
         const val PREVIOUS = "PREVIOUS"
-        const val NEXT = "NEXT"
     }
 
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
@@ -72,8 +73,12 @@ class CopyAction : ActionCallback {
         // Read from history so we never copy a transient loading message
         val text = repository.getCurrentExcuse() ?: return
 
+        // Check if the user wants to include "No, thanks!" prefix in the copy
+        val shouldIncludePrefix = context.dataStore.data.first()[ExcuseRepository.COPY_PREFIX_KEY] ?: false
+        val textToCopy = if (shouldIncludePrefix) "No, thanks! $text" else text
+
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("No, thanks! Excuse", text)
+        val clip = ClipData.newPlainText("Excuse", textToCopy)
         clipboard.setPrimaryClip(clip)
 
         // Pick a random hilarious confirmation message, store it, show for 2 s

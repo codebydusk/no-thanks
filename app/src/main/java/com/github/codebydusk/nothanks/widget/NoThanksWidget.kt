@@ -145,21 +145,21 @@ class NoThanksWidget : GlanceAppWidget() {
 
         // Pill (CORNER_ROUND) = 50dp → truly pill-shaped at typical widget heights
         // Rounded (CORNER_SQUARE) = 8dp → Samsung-style gentle rounding
-        // Sharp (CORNER_SHARP) = no cornerRadius modifier applied → true 0dp square
+        // Sharp (CORNER_SHARP) = 0dp → true square with no rounding
+        val cornerRadius = when (cornerStyle) {
+            ExcuseRepository.CORNER_ROUND  -> 50.dp
+            ExcuseRepository.CORNER_SQUARE -> 8.dp
+            else /* CORNER_SHARP */         -> 0.dp
+        }
+
         val baseModifier = GlanceModifier
             .fillMaxSize()
             .background(backgroundColor)
-            .padding(horizontal = hPadding, vertical = padding)
+            .cornerRadius(cornerRadius)
 
-        val boxModifier = when (cornerStyle) {
-            ExcuseRepository.CORNER_ROUND  -> baseModifier.cornerRadius(50.dp)
-            ExcuseRepository.CORNER_SQUARE -> baseModifier.cornerRadius(8.dp)
-            else /* CORNER_SHARP */         -> baseModifier   // no cornerRadius → true square
-        }
-
-        Box(modifier = boxModifier) {
+        Box(modifier = baseModifier) {
             Column(
-                modifier = GlanceModifier.fillMaxSize(),
+                modifier = GlanceModifier.fillMaxSize().padding(horizontal = hPadding, vertical = padding),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
@@ -255,20 +255,20 @@ class NoThanksWidget : GlanceAppWidget() {
      * Returns ThemeColors(background, foreground, accent) for the given theme + dark-mode.
      *
      * Theme philosophy:
-     *  Nothing OS  → pure black/white body, Nothing red accent (both modes)
-     *  Samsung      → warm off-tones, Samsung blue accent
-     *  OnePlus      → near-black/white body, OnePlus red accent (both modes)
+     *  Nothing OS  → near-black/off-white high-contrast body, Nothing red accent (both modes)
+     *  Samsung      → warm off-tones, Samsung blue accent (bright in light, lighter in dark)
+     *  OnePlus      → near-black/off-white body, OnePlus red accent (both modes)
      *  Material     → standard M3 surface tones, Material purple accent
      */
     private fun resolveThemeColors(theme: String, isDark: Boolean): ThemeColors = when (theme) {
         ExcuseRepository.THEME_NOTHING -> if (isDark) ThemeColors(
-            background = ComposeColor.Black,
-            foreground = ComposeColor.White,
-            accent     = ComposeColor(0xFFD71921)  // Nothing red
+            background = ComposeColor(0xFF0F0F0F),  // Near-black
+            foreground = ComposeColor(0xFFFAFAFA),  // Off-white
+            accent     = ComposeColor(0xFFD71921)   // Nothing red
         ) else ThemeColors(
-            background = ComposeColor.White,
-            foreground = ComposeColor.Black,
-            accent     = ComposeColor(0xFFD71921)
+            background = ComposeColor(0xFFFAFAFA),  // Off-white
+            foreground = ComposeColor(0xFF1A1A1A),  // Near-black
+            accent     = ComposeColor(0xFFD71921)   // Nothing red
         )
 
         ExcuseRepository.THEME_SAMSUNG -> if (isDark) ThemeColors(
@@ -278,7 +278,7 @@ class NoThanksWidget : GlanceAppWidget() {
         ) else ThemeColors(
             background = ComposeColor(0xFFF7F7F7),
             foreground = ComposeColor(0xFF1A1A1A),
-            accent     = ComposeColor(0xFF1428A0)  // Samsung blue (deep for light bg)
+            accent     = ComposeColor(0xFF0066FF)  // Samsung blue (bright for light bg)
         )
 
         ExcuseRepository.THEME_ONEPLUS -> if (isDark) ThemeColors(

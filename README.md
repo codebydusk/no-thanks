@@ -29,7 +29,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 | Version | Date | Notes |
 | --- | --- | --- |
-| [v1.0.0](https://github.com/codebydusk/no-thanks/releases/tag/v1.0) | — | Initial release |
+| [v1.0.0](https://github.com/codebydusk/no-thanks/releases/tag/v1.0) | May 30, 2026 | Initial release |
 
 > Older releases are always available on the [GitHub Releases page](https://github.com/codebydusk/no-thanks/releases).
 
@@ -44,6 +44,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 - **Refresh button** (↻) to fetch a new excuse from the API
 - **Previous button** (←) to browse through your last 10 excuses (toggle-able in settings)
 - **Tap to copy** or **dedicated copy button** — configurable in settings
+- **Copy with or without prefix** — toggle whether "No, thanks!" is included in copied text
 - **Hilarious copy confirmation** shown for 2 seconds after copying (randomly chosen from 10 messages)
 - **Theme-matched loading messages** — funny quips while the API is being called, no boring spinner
 - **Sarcastic fallback messages** when the API is unreachable
@@ -54,6 +55,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 - **Widget Theme** — 5 themes: Blueprint, Material, Nothing OS, Samsung One UI, OnePlus
 - **Corner Style** — Pill / Rounded / Sharp
 - **Copy Mechanism** — Tap text to copy, or show a dedicated copy button
+- **Copy Prefix** — Toggle whether "No, thanks!" is included when copying
 - **Navigation** — Toggle the previous (←) button on/off
 
 ## Widget Themes
@@ -62,8 +64,8 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 | --- | --- | --- | --- |
 | **Blueprint** *(default)* | Digital Blue palette | Light blue (`#E5F0FF`) bg · navy (`#002966`) text · blue (`#0052CC`) accent | Near-black (`#000E24`) bg · sky-blue (`#CCE0FF`) text · vivid blue (`#3385FF`) accent |
 | **Material** | MD3 standard | Light surface (`#FFFBFE`) · dark text | Dark surface (`#1C1B1F`) · light text |
-| **Nothing OS** | Dot-matrix monospace | White bg · black text · **red** (`#D71921`) refresh icon | Black bg · white text · **red** refresh icon |
-| **Samsung One UI** | Rounded sans-serif | Warm light (`#F7F7F7`) bg · dark text · Samsung blue accent | Warm dark (`#1A1A1A`) bg · light text · blue accent |
+| **Nothing OS** | Dot-matrix monospace | Off-white (`#FAFAFA`) bg · near-black (`#1A1A1A`) text · **red** (`#D71921`) refresh icon | Near-black (`#0F0F0F`) bg · off-white (`#FAFAFA`) text · **red** refresh icon |
+| **Samsung One UI** | Rounded sans-serif | Warm light (`#F7F7F7`) bg · dark text · bright blue (`#0066FF`) accent | Warm dark (`#1A1A1A`) bg · light text · light blue (`#4B9FFF`) accent |
 | **OnePlus (OxygenOS)** | Clean minimal | Near-white (`#FAFAFA`) bg · dark text · **red** (`#F6000D`) refresh icon | Near-black (`#0F0F0F`) bg · light text · **red** refresh icon |
 
 > Each theme automatically adapts to your device's system dark/light preference unless you override it in settings.
@@ -74,7 +76,9 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 | --- | --- | --- |
 | **Pill** | 50 dp | Fully rounded, pill/capsule shape |
 | **Rounded** | 8 dp | Gentle, Samsung-style corner rounding |
-| **Sharp** | 0 dp | True square with zero rounding |
+| **Sharp*** | 0 dp | True square with zero rounding |
+
+> *Sharp corners may appear rounded on some launchers due to system-level widget rounding that cannot be overridden by the app.
 
 ## Appearance Modes
 
@@ -91,7 +95,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 | **Tap text** | Tap anywhere on the excuse text to copy it to the clipboard |
 | **Copy button** | Shows a dedicated copy icon (📋) next to the refresh button |
 
-> The "No, thanks!" prefix is **not** copied — only the raw excuse text goes to the clipboard.
+> By default, only the raw excuse text is copied. Use the **Copy Prefix** toggle in settings to include "No, thanks!" in the copied text.
 
 ## Copy Confirmations
 

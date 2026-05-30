@@ -60,22 +60,28 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
     
     val currentTheme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_NOTHANKS)
     val currentCornerStyle by repository.cornerStyleFlow.collectAsState(initial = ExcuseRepository.CORNER_ROUND)
     val currentDarkMode by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)
     val currentCopyMechanism by repository.copyMechanismFlow.collectAsState(initial = ExcuseRepository.COPY_TAP)
     val showPrevButton by repository.showPrevButtonFlow.collectAsState(initial = true)
+    val includeCopyPrefix by repository.copyPrefixFlow.collectAsState(initial = false)
 
     val context = androidx.compose.ui.platform.LocalContext.current
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
-    ) {
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { scaffoldPadding ->
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(scaffoldPadding)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(vertical = 8.dp)
+        ) {
         // App header / tagline
         item {
             Card(
@@ -164,16 +170,25 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                     ExcuseRepository.CORNER_SQUARE to "Rounded",
                     ExcuseRepository.CORNER_SHARP to "Sharp"
                 )
-                SegmentedOptions(
-                    options = cornerOptions,
-                    selectedValue = currentCornerStyle,
-                    onSelect = { value ->
-                        scope.launch {
-                            repository.updateSetting(ExcuseRepository.CORNER_STYLE_KEY, value)
-                            NoThanksWidget().updateAll(context)
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    SegmentedOptions(
+                        options = cornerOptions,
+                        selectedValue = currentCornerStyle,
+                        onSelect = { value ->
+                            scope.launch {
+                                repository.updateSetting(ExcuseRepository.CORNER_STYLE_KEY, value)
+                                NoThanksWidget().updateAll(context)
+                            }
                         }
+                    )
+                    if (currentCornerStyle == ExcuseRepository.CORNER_SHARP) {
+                        Text(
+                            text = "*Sharp corners may appear rounded on some launchers due to system-level widget rounding.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
-                )
+                }
             }
         }
 
@@ -194,6 +209,38 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                         }
                     }
                 )
+            }
+        }
+
+        // Copy Prefix toggle
+        item {
+            SettingsSection(title = "Copy Prefix") {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Include \"No, thanks!\" Prefix",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Text(
+                            text = "Add prefix to copied excuse text",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = includeCopyPrefix,
+                        onCheckedChange = { checked ->
+                            scope.launch {
+                                repository.updateSetting(ExcuseRepository.COPY_PREFIX_KEY, checked)
+                                NoThanksWidget().updateAll(context)
+                            }
+                        }
+                    )
+                }
             }
         }
 
@@ -229,28 +276,48 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
             }
         }
         
-        // Fetch button
+        // Refresh Excuse and Exit buttons
         item {
-            FilledTonalButton(
-                onClick = { 
-                    scope.launch { 
-                        repository.getNextExcuse()
-                        NoThanksWidget().updateAll(context)
-                    }
-                },
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(
-                    "Fetch New Excuse & Update Widget",
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
+                FilledTonalButton(
+                    onClick = { 
+                        scope.launch { 
+                            repository.getNextExcuse()
+                            NoThanksWidget().updateAll(context)
+                            snackbarHostState.showSnackbar("Excuse updated!")
+                        }
+                    },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        "Refresh",
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                }
+                
+                FilledTonalButton(
+                    onClick = { 
+                        (context as? ComponentActivity)?.finish()
+                    },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        "Exit",
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                }
             }
         }
 
         // Bottom spacer for edge-to-edge
         item {
             Spacer(modifier = Modifier.height(16.dp))
+        }
         }
     }
 }
