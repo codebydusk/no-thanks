@@ -169,12 +169,6 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             }
                         )
                     }
-                    Text(
-                        text = "*Widget themes only apply to the home screen widget.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
                 }
             }
         }
