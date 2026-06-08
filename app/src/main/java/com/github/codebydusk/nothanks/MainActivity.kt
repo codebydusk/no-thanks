@@ -146,6 +146,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                 val themeOptions = listOf(
                     ExcuseRepository.THEME_NOTHING to "Nothing OS",
                     ExcuseRepository.THEME_GOLDEN to "Golden Silence",
+                    ExcuseRepository.THEME_OLED to "OLED",
                     ExcuseRepository.THEME_SYSTEM to "System"
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {

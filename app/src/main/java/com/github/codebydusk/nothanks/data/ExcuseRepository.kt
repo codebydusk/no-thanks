@@ -42,9 +42,10 @@ class ExcuseRepository(private val context: Context) {
         const val DARK_MODE_LIGHT = "LIGHT"
         const val DARK_MODE_DARK = "DARK"
 
-        // Theme values — 3 themes only
+        // Theme values — 4 themes now
         const val THEME_NOTHING = "NOTHING"
         const val THEME_GOLDEN = "GOLDEN"
+        const val THEME_OLED = "OLED"
         const val THEME_SYSTEM = "SYSTEM_THEME"
 
         // Corner style values
@@ -116,6 +117,16 @@ class ExcuseRepository(private val context: Context) {
             "🕯️ illuminating the manuscript..."
         )
 
+        private val OLED_LOADING = listOf(
+            "⬛ deep space scan...",
+            "🌌 searching the void...",
+            "🌑 true black processing...",
+            "✨ illuminating pixels...",
+            "🔋 saving battery... while thinking",
+            "🛸 receiving transmission...",
+            "🌒 turning off the lights..."
+        )
+
         private val SYSTEM_LOADING = listOf(
             "⏳ fetching your excuse...",
             "🔄 loading something clever...",
@@ -133,6 +144,7 @@ class ExcuseRepository(private val context: Context) {
             val messages = when (theme) {
                 THEME_NOTHING -> NOTHING_LOADING
                 THEME_GOLDEN -> GOLDEN_LOADING
+                THEME_OLED -> OLED_LOADING
                 THEME_SYSTEM -> SYSTEM_LOADING
                 else -> SYSTEM_LOADING
             }
