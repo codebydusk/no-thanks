@@ -19,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.clickable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -377,28 +378,38 @@ fun SegmentedOptions(
     onSelect: (String) -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+            .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(8.dp)),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        options.forEach { (value, label) ->
+        options.forEachIndexed { index, (value, label) ->
             val isSelected = selectedValue == value
-            Button(
-                onClick = { onSelect(value) },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSelected) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.surface
-                ),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .background(if (isSelected) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Transparent)
+                    .clickable { onSelect(value) }
+                    .padding(vertical = 10.dp),
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = label,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Normal,
-                    color = if (isSelected) MaterialTheme.colorScheme.onPrimary
-                    else MaterialTheme.colorScheme.onSurface,
+                    color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center
+                )
+            }
+            if (index < options.size - 1) {
+                Box(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .fillMaxHeight()
+                        .background(MaterialTheme.colorScheme.primary)
                 )
             }
         }
