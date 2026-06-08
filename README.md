@@ -49,12 +49,12 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 ## 🎨 Themes
 
-| Theme | Vibe | Accent |
-| :--- | :--- | :--- |
-| 🎯 **Nothing OS** *(default)* | Dot-matrix monochrome tech aesthetic | 🔴 **Red** (`#d71921`) |
-| ⚜️ **Golden Silence** | Erdtree-inspired elegance (Charcoal & Gold) | 🟤 **Rust** (`#CD4631`) |
-| 🌑 **OLED** | Pitch black minimalism | 🟢 **Lime** (`#CAFE48`) |
-| 🤖 **System** | Android 12+ dynamic wallpaper colors | 🎨 **Material You** |
+| Theme | Vibe | Background (Light / Dark) | Accent |
+| :--- | :--- | :--- | :--- |
+| 🎯 **Nothing OS** *(default)* | Dot-matrix monochrome tech aesthetic | ⚪ `#FDFBFF` / ⚫ `#1B1B1D` | 🔴 **Red** (`#D71921`) |
+| ⚜️ **Golden Silence** | Erdtree-inspired elegance (Charcoal & Gold) | 🟡 `#FFCB47` / 🟤 `#1E1E24` | 🟤 **Rust** (`#CD4631`) |
+| 🌑 **OLED** | Pitch black minimalism | 🌑 `#000000` *(Dark only)* | 🟢 **Lime** (`#CAFE48`) |
+| 🤖 **System** | Android 12+ dynamic wallpaper colors | 🎨 **Material You** | 🎨 **Material You** |
 
 > **Want to add your phone's theme?**
 > I built this for Nothing OS, but it's meant for everyone. Fork the repo, add your colors to `Theme.kt` and `NoThanksWidget.kt`, and open a Pull Request! Everyone is welcome. 💛
