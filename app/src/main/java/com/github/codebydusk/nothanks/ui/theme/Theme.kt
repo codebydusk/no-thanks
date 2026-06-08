@@ -1,65 +1,63 @@
 package com.github.codebydusk.nothanks.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
-// ── Golden Silence dark: charcoal background, gold text / borders ───────────
+// ── Golden Silence dark: charcoal bg, EVERYTHING else gold ──────────────────
 private val GoldenSilenceDark = darkColorScheme(
     primary = GoldenYellow,
     onPrimary = DarkCharcoal,
-    primaryContainer = Color(0xFF3A3820),
+    primaryContainer = DarkCharcoal,
     onPrimaryContainer = GoldenYellow,
     secondary = GoldenYellow,
     onSecondary = DarkCharcoal,
-    secondaryContainer = Color(0xFF3A3820),
+    secondaryContainer = DarkCharcoal,
     onSecondaryContainer = GoldenYellow,
     tertiary = GoldenYellow,
     onTertiary = DarkCharcoal,
     background = DarkCharcoal,
     onBackground = GoldenYellow,
-    surface = DarkCharcoalLight,
+    surface = DarkCharcoal,
     onSurface = GoldenYellow,
-    surfaceVariant = DarkCharcoalLight,
-    onSurfaceVariant = GoldenMuted,
-    surfaceContainerLow = DarkCharcoalLight,
-    surfaceContainer = DarkCharcoalLight,
-    surfaceContainerHigh = DarkCharcoalLight,
+    surfaceVariant = DarkCharcoal,
+    onSurfaceVariant = GoldenYellow,
+    surfaceContainerLow = DarkCharcoal,
+    surfaceContainer = DarkCharcoal,
+    surfaceContainerHigh = DarkCharcoal,
     outline = GoldenYellow,
-    outlineVariant = Color(0xFF5A4A1A),
-    error = Color(0xFFFFB4AB),
-    onError = Color(0xFF690005),
+    outlineVariant = GoldenYellow,
+    error = GoldenYellow,
+    onError = DarkCharcoal,
 )
 
-// ── Golden Silence light: gold background, charcoal text / borders ──────────
+// ── Golden Silence light: gold bg, EVERYTHING else charcoal ─────────────────
 private val GoldenSilenceLight = lightColorScheme(
     primary = DarkCharcoal,
     onPrimary = GoldenYellow,
-    primaryContainer = DarkCharcoal,
-    onPrimaryContainer = GoldenYellow,
+    primaryContainer = GoldenYellow,
+    onPrimaryContainer = DarkCharcoal,
     secondary = DarkCharcoal,
     onSecondary = GoldenYellow,
-    secondaryContainer = DarkCharcoal,
-    onSecondaryContainer = GoldenYellow,
+    secondaryContainer = GoldenYellow,
+    onSecondaryContainer = DarkCharcoal,
     tertiary = DarkCharcoal,
     onTertiary = GoldenYellow,
     background = GoldenYellow,
     onBackground = DarkCharcoal,
-    surface = GoldenYellowLight,
+    surface = GoldenYellow,
     onSurface = DarkCharcoal,
-    surfaceVariant = GoldenYellowLight,
-    onSurfaceVariant = CharcoalMuted,
-    surfaceContainerLow = GoldenYellowLight,
-    surfaceContainer = GoldenYellowLight,
-    surfaceContainerHigh = GoldenYellowLight,
+    surfaceVariant = GoldenYellow,
+    onSurfaceVariant = DarkCharcoal,
+    surfaceContainerLow = GoldenYellow,
+    surfaceContainer = GoldenYellow,
+    surfaceContainerHigh = GoldenYellow,
     outline = DarkCharcoal,
-    outlineVariant = Color(0xFF5A5830),
-    error = Color(0xFFBA1A1A),
-    onError = Color.White,
+    outlineVariant = DarkCharcoal,
+    error = DarkCharcoal,
+    onError = GoldenYellow,
 )
 
 @Composable
