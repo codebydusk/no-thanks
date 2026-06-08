@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -190,13 +191,11 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             }
                         }
                     )
-                    if (currentCornerStyle == ExcuseRepository.CORNER_SHARP) {
-                        Text(
-                            text = "*Sharp corners may appear rounded on some launchers due to system-level widget rounding.",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    Text(
+                        text = "*Sharp corners may appear rounded on some launchers due to system-level widget rounding.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }
@@ -386,11 +385,6 @@ fun SegmentedOptions(
                     containerColor = if (isSelected) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.surface
                 ),
-                border = BorderStroke(
-                    1.dp,
-                    if (isSelected) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.outlineVariant
-                ),
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
             ) {
                 Text(
@@ -416,13 +410,19 @@ fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () 
             .padding(horizontal = 4.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RadioButton(
-            selected = selected,
-            onClick = null,
-            colors = RadioButtonDefaults.colors(
-                selectedColor = MaterialTheme.colorScheme.primary,
-                unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        Box(
+            modifier = Modifier
+                .padding(start = 8.dp, end = 12.dp)
+                .size(18.dp)
+                .background(
+                    color = if (selected) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Transparent,
+                    shape = androidx.compose.foundation.shape.CircleShape
+                )
+                .border(
+                    width = 2.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = androidx.compose.foundation.shape.CircleShape
+                )
         )
         Text(
             label,
