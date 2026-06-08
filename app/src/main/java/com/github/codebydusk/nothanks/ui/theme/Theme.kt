@@ -43,8 +43,8 @@ private val GoldenSilenceDark = buildDuoToneColorScheme(GoldenYellow, DarkCharco
 private val GoldenSilenceLight = buildDuoToneColorScheme(DarkCharcoal, GoldenYellow, false)
 
 // ── Nothing OS ──────────────────
-private val NothingDark = buildDuoToneColorScheme(Color(0xFF5E5E62), Color(0xFF1B1B1D), true)
-private val NothingLight = buildDuoToneColorScheme(Color(0xFF5E5E62), Color(0xFFFDFBFF), false)
+private val NothingDark = buildDuoToneColorScheme(Color(0xFFFDFBFF), Color(0xFF1B1B1D), true)
+private val NothingLight = buildDuoToneColorScheme(Color(0xFF1B1B1D), Color(0xFFFDFBFF), false)
 
 // ── OLED ──────────────────
 private val OledDark = buildDuoToneColorScheme(Color(0xFFCAFE48), Color(0xFF000000), true)
