@@ -20,6 +20,15 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 </div>
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="assets/screenshot-1.jpeg" width="24%">
+  <img src="assets/screenshot-2.jpeg" width="24%">
+  <img src="assets/screenshot-3.jpeg" width="24%">
+  <img src="assets/screenshot-4.jpeg" width="24%">
+</p>
+
 ---
 
 ## ✨ Features
