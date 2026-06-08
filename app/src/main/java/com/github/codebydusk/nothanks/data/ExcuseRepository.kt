@@ -42,12 +42,10 @@ class ExcuseRepository(private val context: Context) {
         const val DARK_MODE_LIGHT = "LIGHT"
         const val DARK_MODE_DARK = "DARK"
 
-        // Theme values
+        // Theme values — 3 themes only
         const val THEME_NOTHING = "NOTHING"
-        const val THEME_SAMSUNG = "SAMSUNG"
-        const val THEME_MATERIAL = "MATERIAL"
-        const val THEME_ONEPLUS = "ONEPLUS"
-        const val THEME_NOTHANKS = "NOTHANKS"  // Branded "Blueprint" Digital Blue theme
+        const val THEME_GOLDEN = "GOLDEN"
+        const val THEME_SYSTEM = "SYSTEM_THEME"
 
         // Corner style values
         const val CORNER_ROUND = "ROUND"
@@ -103,34 +101,25 @@ class ExcuseRepository(private val context: Context) {
             "⚙️ glyph interface busy..."
         )
 
-        private val SAMSUNG_LOADING = listOf(
-            "🤖 asking Bixby nicely...",
-            "🌌 Galaxy AI generating...",
-            "📡 SmartThings: working...",
-            "🎨 One UI loading excuse...",
-            "🌐 connecting to Galaxy...",
-            "🖥️ DeX: excuse incoming...",
-            "✨ Refreshed. Free RAM: 2.4KB!"
+        private val GOLDEN_LOADING = listOf(
+            "⚜️ summoning ancient wisdom...",
+            "🏰 the scroll is unrolling...",
+            "📜 consulting the archives...",
+            "🗡️ forging your refusal...",
+            "👑 the royal decree approaches...",
+            "🔔 the bell tolls for thee...",
+            "⚗️ brewing golden words...",
+            "🕯️ illuminating the manuscript..."
         )
 
-        private val ONEPLUS_LOADING = listOf(
-            "🚀 Never Settle... hold on!",
-            "⚡ Warp charging excuse...",
-            "🧠 OxygenOS AI processing...",
-            "🔕 Alert Slider: maybe?",
-            "🏆 Flagship loading...™",
-            "💎 Pro mode: thinking...",
-            "⏱️ OnePlus never delays... usually..."
-        )
-
-        private val MATERIAL_LOADING = listOf(
-            "📚 consulting MD3...",
-            "🌈 dynamic color: active",
-            "💧 ripple effect running",
-            "📐 applying elevation...",
-            "🎨 Material You: thinking...",
-            "📋 following guidelines...",
-            "🎭 themed refusal coming..."
+        private val SYSTEM_LOADING = listOf(
+            "⏳ fetching your excuse...",
+            "🔄 loading something clever...",
+            "💭 thinking of a good one...",
+            "📡 connecting to excuse server...",
+            "✨ generating brilliance...",
+            "🧠 processing refusal...",
+            "🎯 targeting the perfect excuse..."
         )
 
         /**
@@ -139,9 +128,9 @@ class ExcuseRepository(private val context: Context) {
         fun getRandomLoadingMessage(theme: String): String {
             val messages = when (theme) {
                 THEME_NOTHING -> NOTHING_LOADING
-                THEME_SAMSUNG -> SAMSUNG_LOADING
-                THEME_ONEPLUS -> ONEPLUS_LOADING
-                else -> MATERIAL_LOADING
+                THEME_GOLDEN -> GOLDEN_LOADING
+                THEME_SYSTEM -> SYSTEM_LOADING
+                else -> SYSTEM_LOADING
             }
             return messages[Random.nextInt(messages.size)]
         }
@@ -161,7 +150,7 @@ class ExcuseRepository(private val context: Context) {
 
     /** Reads the currently saved theme setting (used by widget actions). */
     suspend fun getThemeSetting(): String =
-        context.dataStore.data.first()[THEME_KEY] ?: THEME_MATERIAL
+        context.dataStore.data.first()[THEME_KEY] ?: THEME_NOTHING
 
     private suspend fun addToHistory(reason: String) {
         context.dataStore.edit { preferences ->
@@ -242,9 +231,9 @@ class ExcuseRepository(private val context: Context) {
         return history.size
     }
 
-    // Flows for settings observation (THEME_NOTHANKS is the default on fresh install)
+    // Flows for settings observation — default theme is Nothing OS
     val darkModeFlow: Flow<String> = context.dataStore.data.map { it[DARK_MODE_KEY] ?: DARK_MODE_SYSTEM }
-    val themeFlow: Flow<String> = context.dataStore.data.map { it[THEME_KEY] ?: THEME_NOTHANKS }
+    val themeFlow: Flow<String> = context.dataStore.data.map { it[THEME_KEY] ?: THEME_NOTHING }
     val cornerStyleFlow: Flow<String> = context.dataStore.data.map { it[CORNER_STYLE_KEY] ?: CORNER_ROUND }
     val copyMechanismFlow: Flow<String> = context.dataStore.data.map { it[COPY_MECHANISM_KEY] ?: COPY_TAP }
     val showPrevButtonFlow: Flow<Boolean> = context.dataStore.data.map { it[SHOW_PREV_BUTTON_KEY] ?: true }

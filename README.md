@@ -15,9 +15,9 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 <div align="center">
 
-[![Latest Release](https://img.shields.io/github/v/release/codebydusk/no-thanks?style=for-the-badge&logo=android&label=Latest+APK&color=0052CC)](https://github.com/codebydusk/no-thanks/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/codebydusk/no-thanks?style=for-the-badge&logo=android&label=Latest+APK&color=FFCB47)](https://github.com/codebydusk/no-thanks/releases/latest)
 &nbsp;
-[![Total Downloads](https://img.shields.io/github/downloads/codebydusk/no-thanks/total?style=for-the-badge&color=002966&label=Total+Downloads)](https://github.com/codebydusk/no-thanks/releases)
+[![Total Downloads](https://img.shields.io/github/downloads/codebydusk/no-thanks/total?style=for-the-badge&color=1E1E24&label=Total+Downloads)](https://github.com/codebydusk/no-thanks/releases)
 
 **[⬇ Download latest APK](https://github.com/codebydusk/no-thanks/releases/latest)** &nbsp;·&nbsp; [View all releases →](https://github.com/codebydusk/no-thanks/releases)
 
@@ -53,7 +53,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 ### Settings App
 
 - **Appearance** — System default / Light / Dark
-- **Widget Theme** — 5 themes: Blueprint, Material, Nothing OS, Samsung One UI, OnePlus
+- **Widget Theme** — 3 themes: Nothing OS, Golden Silence, System
 - **Corner Style** — Pill / Rounded / Sharp
 - **Text Size** — Small / Normal / Large
 - **Copy Mechanism** — Tap text to copy, or show a dedicated copy button
@@ -62,15 +62,28 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 ## Widget Themes
 
-| Theme | Style | Light Mode | Dark Mode |
+| Theme | Font | Light Mode | Dark Mode |
 | --- | --- | --- | --- |
-| **Blueprint** *(default)* | Digital Blue palette | Light blue (`#E5F0FF`) bg · navy (`#002966`) text · blue (`#0052CC`) accent | Near-black (`#000E24`) bg · sky-blue (`#CCE0FF`) text · vivid blue (`#3385FF`) accent |
-| **Material** | MD3 standard | Light surface (`#FFFBFE`) · dark text | Dark surface (`#1C1B1F`) · light text |
-| **Nothing OS** | Dot-matrix monospace | Off-white (`#FAFAFA`) bg · grey (`#5C5C60`) text · **red** (`#D81921`) refresh icon | Light grey (`#1B1B1D`) bg · white (`#F5F3F7`) text · **red** refresh icon |
-| **Samsung One UI** | Rounded sans-serif | Warm light (`#F7F7F7`) bg · dark text · bright blue (`#0066FF`) accent | Warm dark (`#1A1A1A`) bg · light text · light blue (`#4B9FFF`) accent |
-| **OnePlus (OxygenOS)** | Clean minimal | Near-white (`#FAFAFA`) bg · dark text · **red** (`#F6000D`) refresh icon | Near-black (`#0F0F0F`) bg · light text · **red** refresh icon |
+| **Nothing OS** *(default)* | Space Grotesk | White (`#fdfbff`) bg · dark (`#1b1b1d`) text · grey (`#5e5e62`) nav · **red** (`#d71921`) refresh | Near-black (`#1b1b1d`) bg · white (`#fdfbff`) text · grey (`#5e5e62`) nav · **red** (`#d71921`) refresh |
+| **Golden Silence** | Metamorphous | Gold (`#FFCB47`) bg · charcoal (`#1E1E24`) text · all controls charcoal | Charcoal (`#1E1E24`) bg · gold (`#FFCB47`) text · all controls gold |
+| **System** | System default | Uses your device's **Material You** wallpaper-derived colors (Android 12+) | Uses your device's **Material You** wallpaper-derived colors (Android 12+) |
 
 > Each theme automatically adapts to your device's system dark/light preference unless you override it in settings.
+>
+> **System** theme reads your device's dynamic accent color on Android 12+. On older devices, it falls back to neutral Material3 defaults.
+
+### 🎨 Want to add your phone's theme?
+
+I designed the Nothing OS theme because that's the phone I carry every day — but this project is built for everyone. If you rock a Samsung, OnePlus, Pixel, or any other device, I'd love to see your phone's aesthetic represented here.
+
+Here's how you can contribute a new theme:
+
+1. **Fork** this repo
+2. Pick your colors — background, text, navigation, and accent for both light and dark modes
+3. Add your theme constant in `ExcuseRepository.kt`, colors in `NoThanksWidget.kt`, and the option in `MainActivity.kt`
+4. Open a **Pull Request** — I'll review it personally and merge it in
+
+Every contribution makes this app feel more like home for someone. Don't hesitate — even if it's your first PR ever, you're welcome here. 💛
 
 ## Corner Styles
 
@@ -80,7 +93,20 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 | **Rounded** | 8 dp | Gentle, Samsung-style corner rounding |
 | **Sharp*** | 0 dp | True square with zero rounding |
 
-> *Sharp corners may appear rounded on some launchers due to system-level widget rounding that cannot be overridden by the app.
+> **Sharp** corners may appear rounded on some launchers due to system-level widget rounding that cannot be overridden by the app.
+>
+> | Launcher / OS | Sharp corners respect? | Notes |
+> | --- | --- | --- |
+> | **Pixel Launcher** (stock Android) | ❌ Rounded | Google enforces ~28 dp rounding on all widgets since Android 12 |
+> | **Samsung One UI Home** | ❌ Rounded | One UI applies its own minimum corner radius to all widgets |
+> | **Nothing Launcher** (Nothing OS) | ❌ Rounded | System-level rounding may override Sharp on most devices |
+> | **OxygenOS Launcher** (OnePlus) | ✅ Works | Generally respects 0 dp corners on stock launcher |
+> | **Nova Launcher** (third-party) | ✅ Works | Custom launchers usually pass widget radii through unchanged |
+> | **Lawnchair** (third-party) | ✅ Works | No additional rounding applied |
+> | **MIUI / HyperOS** (Xiaomi) | ⚠️ Partial | Some devices override, some don't — varies by ROM version |
+> | **EMUI** (Huawei) | ⚠️ Partial | Behaviour depends on Android version and EMUI skin |
+>
+> *Disclaimer: Launcher behaviour can change with OS or launcher updates. The table above reflects observations at time of writing and may not hold across all versions.*
 
 ## Text Size
 
@@ -132,26 +158,19 @@ While fetching excuses, theme-appropriate loading messages with emojis appear:
 - ⏳ nothing to show yet...
 - ✨ glyphs assembling...
 
-### Samsung One UI 🌟
-- 🤖 asking Bixby nicely...
-- 🌌 Galaxy AI generating...
-- 📡 SmartThings: working...
-- 🎨 One UI loading excuse...
-- ✨ Refreshed. Free RAM: 2.4KB!
+### Golden Silence ⚜️
+- ⚜️ summoning ancient wisdom...
+- 🏰 the scroll is unrolling...
+- 📜 consulting the archives...
+- 🗡️ forging your refusal...
+- 👑 the royal decree approaches...
 
-### OnePlus (OxygenOS) ⚡
-- 🚀 Never Settle... hold on!
-- ⚡ Warp charging excuse...
-- 🧠 OxygenOS AI processing...
-- 🔔 Alert Slider: maybe?
-- 🏆 Flagship loading...™
-
-### Material Design 📚
-- 📚 consulting MD3...
-- 🌈 dynamic color: active
-- 💧 ripple effect running
-- 📄 applying elevation...
-- 🎨 Material You: thinking...
+### System ⏳
+- ⏳ fetching your excuse...
+- 🔄 loading something clever...
+- 💭 thinking of a good one...
+- 📡 connecting to excuse server...
+- ✨ generating brilliance...
 
 ## Screenshots
 
@@ -166,6 +185,7 @@ While fetching excuses, theme-appropriate loading messages with emojis appear:
 | Widget Framework | Jetpack Glance 1.1.1 |
 | Networking | Retrofit 2.11 + Gson |
 | Persistence | DataStore Preferences |
+| Fonts | Metamorphous, Space Grotesk (via Google Fonts) |
 | Build System | Gradle (AGP 9.2.1) |
 | Min SDK | 26 (Android 8.0) |
 | Target SDK | 36 |
@@ -183,9 +203,9 @@ app/src/main/java/com/github/codebydusk/nothanks/
 │   ├── NoThanksWidgetReceiver.kt    # GlanceAppWidgetReceiver
 │   └── WidgetActions.kt             # ActionCallbacks — refresh, history, copy
 └── ui/theme/
-    ├── Color.kt
-    ├── Theme.kt
-    └── Type.kt
+    ├── Color.kt                     # Golden Silence palette constants
+    ├── Theme.kt                     # GoldenSilenceTheme composable
+    └── Type.kt                      # Metamorphous font loading + typography
 ```
 
 ## API

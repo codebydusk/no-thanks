@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Night-mode foreground — same flat-path speech bubble + slash design.
-  Brighter badge (#E5F0FF) and near-black symbol (#000E24) for dark-mode contrast.
+  Night-mode foreground — Golden Silence palette.
+  Same flat-path speech bubble + slash, golden elements on dark background.
   No group transforms — all coordinates pre-computed at 0.75× scale.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,14 +10,14 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Badge circle -->
+    <!-- Badge circle (Golden Yellow #FFCB47) -->
     <path
-        android:fillColor="#E5F0FF"
+        android:fillColor="#FFFFCB47"
         android:pathData="M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z"/>
 
-    <!-- Speech bubble -->
+    <!-- Speech bubble (Dark Charcoal #1E1E24) -->
     <path
-        android:fillColor="#000E24"
+        android:fillColor="#FF1E1E24"
         android:pathData="
             M41.2,31.5
             L66.8,31.5
@@ -33,9 +33,9 @@
             Z
         "/>
 
-    <!-- Slash -->
+    <!-- Slash (Golden Yellow) -->
     <path
-        android:fillColor="#E5F0FF"
+        android:fillColor="#FFFFCB47"
         android:pathData="M34.9,33.2 L39.2,28.9 L73.1,62.9 L68.9,67.1 Z"/>
 
 </vector>

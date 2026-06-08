@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Adaptive icon foreground — speech bubble with diagonal slash.
-
-  All coordinates are pre-computed at 0.75× scale around icon centre (54,54)
-  so NO group-level scaleX/scaleY transforms are used. This maximises
-  compatibility with all launcher renderers (some ignore group transforms).
-
-  Safe zone: all points are within 30dp of centre — well inside the 33dp limit.
-
-  Speech bubble body: scaled rounded-rect, r≈6.75dp, with bottom-left tail.
-    Original (unscaled) extents: x=28..80, y=24..80  →  scaled: x=34.5..73.5, y=31.5..73.5
-    Tail tip: original (23,80) → scaled (30.8, 73.5) — 28.3dp from centre ✓
-
-  Slash bar (\ direction): 4-corner polygon computed from an 8dp-wide bar
-    centred at (54,48), rotated -45°, then scaled 0.75×.
-    Corners: TL(34.9,33.2) TR(39.2,28.9) BR(73.1,62.9) BL(68.9,67.1)
-    Max corner distance from icon centre: 29.1dp ✓
+  Adaptive icon foreground — Golden Silence palette.
+  Speech bubble + diagonal slash in Golden Yellow on charcoal badge.
+  No group transforms — all coordinates pre-computed at 0.75× scale.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -23,19 +10,14 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- 1. Light-blue badge circle (radius 36, fills behind bubble and slash) -->
+    <!-- Badge circle (Golden Yellow #FFCB47) -->
     <path
-        android:fillColor="#CCE0FF"
+        android:fillColor="#FFFFCB47"
         android:pathData="M54,18 A36,36 0 0 1 54,90 A36,36 0 0 1 54,18 Z"/>
 
-    <!--
-      2. Speech bubble — navy rounded-rect + bottom-left tail.
-         Coordinates are the original bubble scaled 0.75× around (54,54):
-           P_scaled = ( 54 + 0.75*(P.x - 54), 54 + 0.75*(P.y - 54) )
-         Corner radius: original 9dp × 0.75 = 6.75dp (approximated by the Q control points).
-    -->
+    <!-- Speech bubble (Dark Charcoal #1E1E24) -->
     <path
-        android:fillColor="#002966"
+        android:fillColor="#FF1E1E24"
         android:pathData="
             M41.2,31.5
             L66.8,31.5
@@ -51,13 +33,9 @@
             Z
         "/>
 
-    <!--
-      3. Diagonal slash (\ direction) — flat 4-corner polygon.
-         Computed from an 8dp-wide bar at (54,48), rotated -45°, scaled 0.75×.
-         Light-blue fill matches the badge → reads as a transparent cut-through.
-    -->
+    <!-- Slash (Golden Yellow — matches badge, reads as transparent cut-through) -->
     <path
-        android:fillColor="#CCE0FF"
+        android:fillColor="#FFFFCB47"
         android:pathData="M34.9,33.2 L39.2,28.9 L73.1,62.9 L68.9,67.1 Z"/>
 
 </vector>

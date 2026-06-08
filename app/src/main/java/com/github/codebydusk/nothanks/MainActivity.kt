@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
@@ -36,7 +37,14 @@ class MainActivity : ComponentActivity() {
         
         enableEdgeToEdge()
         setContent {
-            NoThanksTheme {
+            val currentDarkMode by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)
+            val isDark = when (currentDarkMode) {
+                ExcuseRepository.DARK_MODE_DARK -> true
+                ExcuseRepository.DARK_MODE_LIGHT -> false
+                else -> isSystemInDarkTheme()
+            }
+
+            NoThanksTheme(darkTheme = isDark) {
                 Scaffold(
                     topBar = {
                         CenterAlignedTopAppBar(
@@ -60,9 +68,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
     
-    val currentTheme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_NOTHANKS)
+    val currentTheme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_NOTHING)
     val currentCornerStyle by repository.cornerStyleFlow.collectAsState(initial = ExcuseRepository.CORNER_ROUND)
     val currentDarkMode by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)
     val currentCopyMechanism by repository.copyMechanismFlow.collectAsState(initial = ExcuseRepository.COPY_TAP)
@@ -72,17 +79,13 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
 
     val context = androidx.compose.ui.platform.LocalContext.current
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { scaffoldPadding ->
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(scaffoldPadding)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(vertical = 8.dp)
-        ) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(vertical = 8.dp)
+    ) {
         // App header / tagline
         item {
             Card(
@@ -90,6 +93,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
@@ -135,15 +139,13 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
             }
         }
 
-        // Widget Theme section
+        // Widget Theme section — 3 themes only
         item {
             SettingsSection(title = "Widget Theme") {
                 val themeOptions = listOf(
-                    ExcuseRepository.THEME_NOTHANKS to "Blueprint",
-                    ExcuseRepository.THEME_MATERIAL to "Material",
                     ExcuseRepository.THEME_NOTHING to "Nothing OS",
-                    ExcuseRepository.THEME_SAMSUNG to "Samsung",
-                    ExcuseRepository.THEME_ONEPLUS to "OnePlus"
+                    ExcuseRepository.THEME_GOLDEN to "Golden Silence",
+                    ExcuseRepository.THEME_SYSTEM to "System"
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     themeOptions.forEach { (value, label) ->
@@ -260,7 +262,13 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                                 repository.updateSetting(ExcuseRepository.COPY_PREFIX_KEY, checked)
                                 NoThanksWidget().updateAll(context)
                             }
-                        }
+                        },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
                     )
                 }
             }
@@ -292,45 +300,13 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                                 repository.updateSetting(ExcuseRepository.SHOW_PREV_BUTTON_KEY, checked)
                                 NoThanksWidget().updateAll(context)
                             }
-                        }
-                    )
-                }
-            }
-        }
-        
-        // Refresh Excuse and Exit buttons
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                FilledTonalButton(
-                    onClick = { 
-                        scope.launch { 
-                            repository.getNextExcuse()
-                            NoThanksWidget().updateAll(context)
-                            snackbarHostState.showSnackbar("Excuse updated!")
-                        }
-                    },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        "Refresh",
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
-                }
-                
-                FilledTonalButton(
-                    onClick = { 
-                        (context as? ComponentActivity)?.finish()
-                    },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        "Exit",
-                        modifier = Modifier.padding(vertical = 4.dp)
+                        },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
                     )
                 }
             }
@@ -339,7 +315,6 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
         // Bottom spacer for edge-to-edge
         item {
             Spacer(modifier = Modifier.height(16.dp))
-        }
         }
     }
 }
@@ -351,6 +326,7 @@ fun SettingsSection(title: String, content: @Composable ColumnScope.() -> Unit) 
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -407,19 +383,14 @@ fun SegmentedOptions(
 fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () -> Unit) {
     // Resolve preview colors for the theme chip
     val (bgColor, fgColor) = when (theme) {
-        ExcuseRepository.THEME_NOTHANKS -> {
-            androidx.compose.ui.graphics.Color(0xFF000E24) to androidx.compose.ui.graphics.Color(0xFFCCE0FF)
-        }
         ExcuseRepository.THEME_NOTHING -> {
-            androidx.compose.ui.graphics.Color(0xFF1B1B1D) to androidx.compose.ui.graphics.Color(0xFFD81921)
+            androidx.compose.ui.graphics.Color(0xFF1B1B1D) to androidx.compose.ui.graphics.Color(0xFFD71921)
         }
-        ExcuseRepository.THEME_SAMSUNG -> {
-            androidx.compose.ui.graphics.Color(0xFF1A1A1A) to androidx.compose.ui.graphics.Color(0xFFF7F7F7)
-        }
-        ExcuseRepository.THEME_ONEPLUS -> {
-            androidx.compose.ui.graphics.Color(0xFF0F0F0F) to androidx.compose.ui.graphics.Color(0xFFF6000D)
+        ExcuseRepository.THEME_GOLDEN -> {
+            androidx.compose.ui.graphics.Color(0xFF1E1E24) to androidx.compose.ui.graphics.Color(0xFFFFCB47)
         }
         else -> {
+            // System — use neutral M3 preview
             androidx.compose.ui.graphics.Color(0xFF1C1B1F) to androidx.compose.ui.graphics.Color(0xFFE6E1E5)
         }
     }
@@ -432,7 +403,14 @@ fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () 
             .padding(horizontal = 4.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RadioButton(selected = selected, onClick = null)
+        RadioButton(
+            selected = selected,
+            onClick = null,
+            colors = RadioButtonDefaults.colors(
+                selectedColor = MaterialTheme.colorScheme.primary,
+                unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        )
         Text(
             label,
             modifier = Modifier
