@@ -288,7 +288,15 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                                 repository.updateSetting(ExcuseRepository.COPY_PREFIX_KEY, checked)
                                 NoThanksWidget().updateAll(context)
                             }
-                        }
+                        },
+                        colors = SwitchDefaults.colors(
+                            checkedTrackColor = MaterialTheme.colorScheme.background,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                            checkedBorderColor = MaterialTheme.colorScheme.primary,
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.outline,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.outline
+                        )
                     )
                 }
             }
@@ -320,7 +328,15 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                                 repository.updateSetting(ExcuseRepository.SHOW_PREV_BUTTON_KEY, checked)
                                 NoThanksWidget().updateAll(context)
                             }
-                        }
+                        },
+                        colors = SwitchDefaults.colors(
+                            checkedTrackColor = MaterialTheme.colorScheme.background,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                            checkedBorderColor = MaterialTheme.colorScheme.primary,
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.outline,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.outline
+                        )
                     )
                 }
             }
