@@ -34,7 +34,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 ### ⚙️ Extensive Customization
 - **Strict Duo-Tone Themes**: Choose from meticulously crafted themes that sync perfectly between the widget and the settings app.
 - **Corner Styles**: From sleek **Sharp** edges to gentle **Rounded** borders and friendly **Pill** shapes.
-- **Typography & Scale**: Pick between System Sans-serif or Monospace fonts, and adjust text sizes (Small/Normal/Large).
+- **Typography & Scale**: Pick between System Sans-serif or Monospace fonts, and precisely adjust text sizes using a 5-step slider.
 
 ---
 
@@ -58,7 +58,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 - 📐 **New UI Controls**: Redesigned settings to use sleek, iOS-style bordered segmented controls.
 - 🎨 **Strict Duo-Tone Setup**: Settings app now perfectly mirrors the active widget theme colors.
 - 🌑 **OLED Theme Added**: Pitch-black background with high-contrast lime green accents.
-- 📝 **Typography**: Added Text Size options (Small, Normal, Large).
+- 📝 **Typography**: Added a 5-step Text Size slider (Extra Small to Extra Large).
 - 😄 **Personality Injection**: Added fun emojis to loading states and copy confirmations.
 - 🪲 **Bug Fixes**: Cleaned up the "No, thanks!" copy prefix logic and completely overhauled widget theming.
 
