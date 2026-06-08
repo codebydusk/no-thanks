@@ -140,16 +140,14 @@ class NoThanksWidget : GlanceAppWidget() {
 
         // Apply text size scale multiplier
         val scaledFontSize = when (textSize) {
+            ExcuseRepository.TEXT_SIZE_EXTRA_SMALL -> fontSize * 0.70f
             ExcuseRepository.TEXT_SIZE_SMALL -> fontSize * 0.85f
             ExcuseRepository.TEXT_SIZE_LARGE -> fontSize * 1.25f
+            ExcuseRepository.TEXT_SIZE_EXTRA_LARGE -> fontSize * 1.50f
             else -> fontSize  // TEXT_SIZE_NORMAL
         }
 
-        val fontWeight = when (theme) {
-            ExcuseRepository.THEME_NOTHING -> FontWeight.Bold
-            ExcuseRepository.THEME_GOLDEN  -> FontWeight.Bold
-            else -> FontWeight.Normal
-        }
+        val fontWeight = FontWeight.Normal
 
         // Use the selected font style
         val fontFamily = when (fontStyle) {

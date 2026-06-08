@@ -196,21 +196,49 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
         // Text Size section
         item {
             SettingsSection(title = "Text Size") {
-                val textSizeOptions = listOf(
-                    ExcuseRepository.TEXT_SIZE_SMALL to "Small",
-                    ExcuseRepository.TEXT_SIZE_NORMAL to "Normal",
-                    ExcuseRepository.TEXT_SIZE_LARGE to "Large"
-                )
-                SegmentedOptions(
-                    options = textSizeOptions,
-                    selectedValue = currentTextSize,
-                    onSelect = { value ->
-                        scope.launch {
-                            repository.updateSetting(ExcuseRepository.TEXT_SIZE_KEY, value)
-                            NoThanksWidget().updateAll(context)
-                        }
-                    }
-                )
+                val currentSliderValue = when (currentTextSize) {
+                    ExcuseRepository.TEXT_SIZE_EXTRA_SMALL -> 0f
+                    ExcuseRepository.TEXT_SIZE_SMALL -> 1f
+                    ExcuseRepository.TEXT_SIZE_NORMAL -> 2f
+                    ExcuseRepository.TEXT_SIZE_LARGE -> 3f
+                    ExcuseRepository.TEXT_SIZE_EXTRA_LARGE -> 4f
+                    else -> 2f
+                }
+                val labels = listOf("Extra Small", "Small", "Normal", "Large", "Extra Large")
+
+                Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                    Slider(
+                        value = currentSliderValue,
+                        onValueChange = { newValue ->
+                            val newSize = when (newValue.toInt()) {
+                                0 -> ExcuseRepository.TEXT_SIZE_EXTRA_SMALL
+                                1 -> ExcuseRepository.TEXT_SIZE_SMALL
+                                2 -> ExcuseRepository.TEXT_SIZE_NORMAL
+                                3 -> ExcuseRepository.TEXT_SIZE_LARGE
+                                4 -> ExcuseRepository.TEXT_SIZE_EXTRA_LARGE
+                                else -> ExcuseRepository.TEXT_SIZE_NORMAL
+                            }
+                            scope.launch {
+                                repository.updateSetting(ExcuseRepository.TEXT_SIZE_KEY, newSize)
+                                NoThanksWidget().updateAll(context)
+                            }
+                        },
+                        valueRange = 0f..4f,
+                        steps = 3,
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.outline
+                        )
+                    )
+                    Text(
+                        text = labels[currentSliderValue.toInt()],
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
 

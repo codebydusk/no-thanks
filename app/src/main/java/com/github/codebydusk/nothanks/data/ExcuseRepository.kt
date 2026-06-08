@@ -58,9 +58,11 @@ class ExcuseRepository(private val context: Context) {
         const val COPY_BUTTON = "BUTTON"
 
         // Text size values
+        const val TEXT_SIZE_EXTRA_SMALL = "EXTRA_SMALL"
         const val TEXT_SIZE_SMALL = "SMALL"
         const val TEXT_SIZE_NORMAL = "NORMAL"
         const val TEXT_SIZE_LARGE = "LARGE"
+        const val TEXT_SIZE_EXTRA_LARGE = "EXTRA_LARGE"
 
         // Font style values
         const val FONT_STYLE_SYSTEM = "SYSTEM"
