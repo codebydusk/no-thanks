@@ -100,4 +100,4 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 - Powered by **[No as a Service](https://github.com/hotheadhacker/no-as-a-service)** by [@hotheadhacker](https://github.com/hotheadhacker).
 - Built with [Jetpack Glance](https://developer.android.com/jetpack/compose/glance).
 
-This project is open source under the **[MIT License](LICENSE)**.
+This project is open source under the **[GNU General Public License v3.0](LICENSE)**.
