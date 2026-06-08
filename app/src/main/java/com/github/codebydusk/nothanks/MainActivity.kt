@@ -39,14 +39,19 @@ class MainActivity : ComponentActivity() {
         
         enableEdgeToEdge()
         setContent {
+            val currentTheme by repository.themeFlow.collectAsState(initial = ExcuseRepository.THEME_SYSTEM)
             val currentDarkMode by repository.darkModeFlow.collectAsState(initial = ExcuseRepository.DARK_MODE_SYSTEM)
-            val isDark = when (currentDarkMode) {
-                ExcuseRepository.DARK_MODE_DARK -> true
-                ExcuseRepository.DARK_MODE_LIGHT -> false
-                else -> isSystemInDarkTheme()
+            
+            val isDark = when (currentTheme) {
+                ExcuseRepository.THEME_OLED -> true // OLED is always dark
+                else -> when (currentDarkMode) {
+                    ExcuseRepository.DARK_MODE_DARK -> true
+                    ExcuseRepository.DARK_MODE_LIGHT -> false
+                    else -> isSystemInDarkTheme()
+                }
             }
 
-            NoThanksTheme(darkTheme = isDark) {
+            NoThanksTheme(theme = currentTheme, darkTheme = isDark) {
                 Scaffold(
                     topBar = {
                         CenterAlignedTopAppBar(
