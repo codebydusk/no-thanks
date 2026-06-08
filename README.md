@@ -29,7 +29,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 | Version | Date | Notes |
 | --- | --- | --- |
-| [v1.0.1](https://github.com/codebydusk/no-thanks/releases/tag/v1.0.1) | June 6, 2026 | Added text size adjustment (Small/Normal/Large) · Added emojis to loading and copy confirmation messages · Updated Copy Prefix description to clarify on/off behavior · "No, thanks!" prefix now respects Copy Prefix setting in widget display |
+| [v1.0.1](https://github.com/codebydusk/no-thanks/releases/tag/v1.0.1) | June 6, 2026 | Added text size adjustment (Small/Normal/Large) · Added emojis to loading and copy confirmation messages · Updated Copy Prefix description to clarify on/off behavior · "No, thanks!" prefix now respects Copy Prefix setting in widget display · Complete theming overhaul: Golden Silence true duo-tone settings UI, simplified to 3 widget themes (Nothing OS, Golden Silence, System with Material You), unified system sans-serif font everywhere, redesigned app logo |
 | [v1.0.0](https://github.com/codebydusk/no-thanks/releases/tag/v1.0) | May 30, 2026 | Initial release |
 
 > Older releases are always available on the [GitHub Releases page](https://github.com/codebydusk/no-thanks/releases).
