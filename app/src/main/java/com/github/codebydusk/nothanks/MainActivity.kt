@@ -93,7 +93,6 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
@@ -326,7 +325,6 @@ fun SettingsSection(title: String, content: @Composable ColumnScope.() -> Unit) 
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

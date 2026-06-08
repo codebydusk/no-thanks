@@ -29,7 +29,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 | Version | Date | Notes |
 | --- | --- | --- |
-| [v1.0.1](https://github.com/codebydusk/no-thanks/releases/tag/v1.0.1) | May 31, 2026 | Added text size adjustment (Small/Normal/Large) · Added emojis to loading and copy confirmation messages · Updated Copy Prefix description to clarify on/off behavior · "No, thanks!" prefix now respects Copy Prefix setting in widget display |
+| [v1.0.1](https://github.com/codebydusk/no-thanks/releases/tag/v1.0.1) | June 6, 2026 | Added text size adjustment (Small/Normal/Large) · Added emojis to loading and copy confirmation messages · Updated Copy Prefix description to clarify on/off behavior · "No, thanks!" prefix now respects Copy Prefix setting in widget display |
 | [v1.0.0](https://github.com/codebydusk/no-thanks/releases/tag/v1.0) | May 30, 2026 | Initial release |
 
 > Older releases are always available on the [GitHub Releases page](https://github.com/codebydusk/no-thanks/releases).
@@ -62,10 +62,10 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 ## Widget Themes
 
-| Theme | Font | Light Mode | Dark Mode |
-| --- | --- | --- | --- |
-| **Nothing OS** *(default)* | Space Grotesk | White (`#fdfbff`) bg · dark (`#1b1b1d`) text · grey (`#5e5e62`) nav · **red** (`#d71921`) refresh | Near-black (`#1b1b1d`) bg · white (`#fdfbff`) text · grey (`#5e5e62`) nav · **red** (`#d71921`) refresh |
-| **Golden Silence** | Metamorphous | Gold (`#FFCB47`) bg · charcoal (`#1E1E24`) text · all controls charcoal | Charcoal (`#1E1E24`) bg · gold (`#FFCB47`) text · all controls gold |
+| Theme | Light Mode | Dark Mode |
+| --- | --- | --- |
+| **Nothing OS** *(default)* | White (`#fdfbff`) bg · dark (`#1b1b1d`) text · grey (`#5e5e62`) nav · **red** (`#d71921`) refresh | Near-black (`#1b1b1d`) bg · white (`#fdfbff`) text · grey (`#5e5e62`) nav · **red** (`#d71921`) refresh |
+| **Golden Silence** | Gold (`#FFCB47`) bg · charcoal (`#1E1E24`) text · all controls charcoal | Charcoal (`#1E1E24`) bg · gold (`#FFCB47`) text · all controls gold |
 | **System** | System default | Uses your device's **Material You** wallpaper-derived colors (Android 12+) | Uses your device's **Material You** wallpaper-derived colors (Android 12+) |
 
 > Each theme automatically adapts to your device's system dark/light preference unless you override it in settings.
@@ -185,7 +185,6 @@ While fetching excuses, theme-appropriate loading messages with emojis appear:
 | Widget Framework | Jetpack Glance 1.1.1 |
 | Networking | Retrofit 2.11 + Gson |
 | Persistence | DataStore Preferences |
-| Fonts | Metamorphous, Space Grotesk (via Google Fonts) |
 | Build System | Gradle (AGP 9.2.1) |
 | Min SDK | 26 (Android 8.0) |
 | Target SDK | 36 |
@@ -204,8 +203,8 @@ app/src/main/java/com/github/codebydusk/nothanks/
 │   └── WidgetActions.kt             # ActionCallbacks — refresh, history, copy
 └── ui/theme/
     ├── Color.kt                     # Golden Silence palette constants
-    ├── Theme.kt                     # GoldenSilenceTheme composable
-    └── Type.kt                      # Metamorphous font loading + typography
+    ├── Theme.kt                     # Golden Silence duo-tone theme
+    └── Type.kt                      # System SansSerif typography
 ```
 
 ## API

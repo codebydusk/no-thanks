@@ -148,15 +148,8 @@ class NoThanksWidget : GlanceAppWidget() {
             else -> FontWeight.Normal
         }
 
-        // Per-theme system font families (Glance can only use system fonts)
-        // Nothing OS  → SansSerif (closest to Space Grotesk)
-        // Golden Silence → Serif (closest to Metamorphous)
-        // System       → Default (whatever the device uses)
-        val fontFamily = when (theme) {
-            ExcuseRepository.THEME_NOTHING -> FontFamily.SansSerif
-            ExcuseRepository.THEME_GOLDEN  -> FontFamily.Serif
-            else -> FontFamily.SansSerif
-        }
+        // Single clean sans-serif font for all themes
+        val fontFamily = FontFamily.SansSerif
 
         // Pill (CORNER_ROUND) = 50dp → truly pill-shaped at typical widget heights
         // Rounded (CORNER_SQUARE) = 8dp → gentle rounding
