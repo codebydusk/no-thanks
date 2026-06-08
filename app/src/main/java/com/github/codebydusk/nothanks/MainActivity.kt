@@ -290,10 +290,12 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             }
                         },
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                            checkedThumbColor = MaterialTheme.colorScheme.surface,
                             checkedTrackColor = MaterialTheme.colorScheme.primary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                            checkedBorderColor = MaterialTheme.colorScheme.primary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.primary,
+                            uncheckedTrackColor = androidx.compose.ui.graphics.Color.Transparent,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.primary
                         )
                     )
                 }
@@ -328,10 +330,12 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             }
                         },
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                            checkedThumbColor = MaterialTheme.colorScheme.surface,
                             checkedTrackColor = MaterialTheme.colorScheme.primary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                            checkedBorderColor = MaterialTheme.colorScheme.primary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.primary,
+                            uncheckedTrackColor = androidx.compose.ui.graphics.Color.Transparent,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.primary
                         )
                     )
                 }
