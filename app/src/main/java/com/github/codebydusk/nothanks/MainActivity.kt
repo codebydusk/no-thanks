@@ -432,15 +432,16 @@ fun DuoToneSwitch(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val thumbOffset by animateDpAsState(targetValue = if (checked) 24.dp else 4.dp, label = "thumbOffset")
-    
+    val thumbOffset by animateDpAsState(targetValue = if (checked) 22.dp else 2.dp, label = "thumbOffset")
+
     Box(
         modifier = modifier
-            .width(52.dp)
-            .height(28.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(if (checked) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Transparent)
-            .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(14.dp))
+            .width(44.dp)
+            .height(24.dp)
+            .background(
+                color = if (checked) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Transparent,
+                shape = RoundedCornerShape(12.dp)
+            )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
@@ -453,8 +454,8 @@ fun DuoToneSwitch(
                 .offset(x = thumbOffset)
                 .size(20.dp)
                 .background(
-                    if (checked) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary,
-                    androidx.compose.foundation.shape.CircleShape
+                    color = if (checked) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary,
+                    shape = androidx.compose.foundation.shape.CircleShape
                 )
         )
     }
