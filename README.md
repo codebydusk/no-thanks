@@ -34,16 +34,16 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 ## ✨ Features
 
 ### 📱 Widget Experience
-- **Responsive Layouts**: Switch seamlessly between a compact **4×1** (up to 3 lines) or an expanded **4×2** (scrollable) layout.
-- **Instant Excuses**: Tap the **refresh button (↻)** to fetch a fresh excuse instantly.
-- **History Browsing**: Use the **previous button (←)** to step back through your last 10 excuses.
-- **Smart Copying**: Tap to copy or use a dedicated button. Automatically prepend *"No, thanks!"* to your excuses.
-- **Personality**: Enjoy sarcastic fallback messages when offline, and fun emoji-filled quips while loading or copying.
+- 📏 **Responsive Layouts**: Switch seamlessly between a compact **4×1** (up to 3 lines) or an expanded **4×2** (scrollable) layout.
+- ⚡ **Instant Excuses**: Tap the **refresh button (↻)** to fetch a fresh excuse instantly.
+- ⏪ **History Browsing**: Use the **previous button (←)** to step back through your last 10 excuses.
+- 📋 **Smart Copying**: Tap to copy or use a dedicated button. Automatically prepend *"No, thanks!"* to your excuses.
+- 😜 **Personality**: Enjoy sarcastic fallback messages when offline, and fun emoji-filled quips while loading or copying.
 
 ### ⚙️ Extensive Customization
-- **Strict Duo-Tone Themes**: Choose from meticulously crafted themes that sync perfectly between the widget and the settings app.
-- **Corner Styles**: From sleek **Sharp** edges to gentle **Rounded** borders and friendly **Pill** shapes.
-- **Typography & Scale**: Pick between System Sans-serif or Monospace fonts, and precisely adjust text sizes using a 5-step slider.
+- 🎨 **Strict Duo-Tone Themes**: Choose from meticulously crafted themes that sync perfectly between the widget and the settings app.
+- 📐 **Corner Styles**: From sleek **Sharp** edges to gentle **Rounded** borders and friendly **Pill** shapes.
+- 🔤 **Typography & Scale**: Pick between System Sans-serif or Monospace fonts, and precisely adjust text sizes using a 5-step slider.
 
 ---
 
