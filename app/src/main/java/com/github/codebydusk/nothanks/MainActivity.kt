@@ -19,9 +19,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -284,7 +281,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    DuoToneSwitch(
+                    Switch(
                         checked = includeCopyPrefix,
                         onCheckedChange = { checked ->
                             scope.launch {
@@ -316,7 +313,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    DuoToneSwitch(
+                    Switch(
                         checked = showPrevButton,
                         onCheckedChange = { checked ->
                             scope.launch {
@@ -422,41 +419,6 @@ fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () 
                 .padding(start = 8.dp)
                 .weight(1f),
             style = MaterialTheme.typography.bodyLarge
-        )
-    }
-}
-
-@Composable
-fun DuoToneSwitch(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val thumbOffset by animateDpAsState(targetValue = if (checked) 22.dp else 2.dp, label = "thumbOffset")
-
-    Box(
-        modifier = modifier
-            .width(44.dp)
-            .height(24.dp)
-            .background(
-                color = if (checked) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Transparent,
-                shape = RoundedCornerShape(12.dp)
-            )
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = { onCheckedChange(!checked) }
-            ),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Box(
-            modifier = Modifier
-                .offset(x = thumbOffset)
-                .size(20.dp)
-                .background(
-                    color = if (checked) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary,
-                    shape = androidx.compose.foundation.shape.CircleShape
-                )
         )
     }
 }

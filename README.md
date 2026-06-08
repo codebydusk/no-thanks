@@ -78,6 +78,8 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 I designed the Nothing OS theme because that's the phone I carry every day — but this project is built for everyone. If you rock a Samsung, OnePlus, Pixel, or any other device, I'd love to see your phone's aesthetic represented here.
 
+> **Why "Golden Silence"?** Honestly, I was just playing a lot of Elden Ring and wanted a theme that matched the Erdtree vibe. 🌳✨
+
 Here's how you can contribute a new theme:
 
 1. **Fork** this repo
