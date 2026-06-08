@@ -29,7 +29,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 
 | Version | Date | Notes |
 | --- | --- | --- |
-| [v1.0.1](https://github.com/codebydusk/no-thanks/releases/tag/v1.0.1) | June 6, 2026 | Added text size adjustment (Small/Normal/Large) · Added emojis to loading and copy confirmation messages · Updated Copy Prefix description to clarify on/off behavior · "No, thanks!" prefix now respects Copy Prefix setting in widget display · Complete theming overhaul: Golden Silence true duo-tone settings UI, simplified to 4 widget themes (Nothing OS, Golden Silence, OLED, System with Material You), unified system sans-serif font everywhere, redesigned app logo · Settings UI tweaks: removed button outlines, converted radio buttons to true duo-tone circles, added always-visible corner style disclaimer · Added new high-contrast OLED theme with pure black background, off-white text, and dark green accents |
+| [v1.0.1](https://github.com/codebydusk/no-thanks/releases/tag/v1.0.1) | June 6, 2026 | Added text size adjustment (Small/Normal/Large) · Added emojis to loading and copy confirmation messages · Updated Copy Prefix description to clarify on/off behavior · "No, thanks!" prefix now respects Copy Prefix setting in widget display · Complete theming overhaul: Golden Silence true duo-tone settings UI, simplified to 4 widget themes (Nothing OS, Golden Silence, OLED, System with Material You), unified system sans-serif font everywhere, redesigned app logo · Settings UI tweaks: removed button outlines, converted radio buttons to true duo-tone circles, added always-visible corner style disclaimer · Added new high-contrast OLED theme with pure black background, off-white text, and lime green accents |
 | [v1.0.0](https://github.com/codebydusk/no-thanks/releases/tag/v1.0) | May 30, 2026 | Initial release |
 
 > Older releases are always available on the [GitHub Releases page](https://github.com/codebydusk/no-thanks/releases).
@@ -67,7 +67,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 | --- | --- | --- |
 | **Nothing OS** *(default)* | White (`#fdfbff`) bg · dark (`#1b1b1d`) text · grey (`#5e5e62`) nav · **red** (`#d71921`) refresh | Near-black (`#1b1b1d`) bg · white (`#fdfbff`) text · grey (`#5e5e62`) nav · **red** (`#d71921`) refresh |
 | **Golden Silence** | Gold (`#FFCB47`) bg · charcoal (`#1E1E24`) text · all controls charcoal | Charcoal (`#1E1E24`) bg · gold (`#FFCB47`) text · all controls gold |
-| **OLED** | Pure black (`#000000`) bg · off-white (`#dcdcdc`) text · grey (`#555555`) nav · **dark green** (`#1b512d`) refresh | *Always dark* |
+| **OLED** | Pure black (`#000000`) bg · off-white (`#F7F7F9`) text · grey (`#555555`) nav · **lime green** (`#CAFE48`) refresh | *Always dark* |
 | **System** | System default | Uses your device's **Material You** wallpaper-derived colors (Android 12+) | Uses your device's **Material You** wallpaper-derived colors (Android 12+) |
 
 > Each theme automatically adapts to your device's system dark/light preference unless you override it in settings.

@@ -19,6 +19,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -281,22 +284,14 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Switch(
+                    DuoToneSwitch(
                         checked = includeCopyPrefix,
                         onCheckedChange = { checked ->
                             scope.launch {
                                 repository.updateSetting(ExcuseRepository.COPY_PREFIX_KEY, checked)
                                 NoThanksWidget().updateAll(context)
                             }
-                        },
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.surface,
-                            checkedTrackColor = MaterialTheme.colorScheme.primary,
-                            checkedBorderColor = MaterialTheme.colorScheme.primary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.primary,
-                            uncheckedTrackColor = androidx.compose.ui.graphics.Color.Transparent,
-                            uncheckedBorderColor = MaterialTheme.colorScheme.primary
-                        )
+                        }
                     )
                 }
             }
@@ -321,22 +316,14 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Switch(
+                    DuoToneSwitch(
                         checked = showPrevButton,
                         onCheckedChange = { checked ->
                             scope.launch {
                                 repository.updateSetting(ExcuseRepository.SHOW_PREV_BUTTON_KEY, checked)
                                 NoThanksWidget().updateAll(context)
                             }
-                        },
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.surface,
-                            checkedTrackColor = MaterialTheme.colorScheme.primary,
-                            checkedBorderColor = MaterialTheme.colorScheme.primary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.primary,
-                            uncheckedTrackColor = androidx.compose.ui.graphics.Color.Transparent,
-                            uncheckedBorderColor = MaterialTheme.colorScheme.primary
-                        )
+                        }
                     )
                 }
             }
@@ -435,6 +422,40 @@ fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () 
                 .padding(start = 8.dp)
                 .weight(1f),
             style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+@Composable
+fun DuoToneSwitch(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val thumbOffset by animateDpAsState(targetValue = if (checked) 24.dp else 4.dp, label = "thumbOffset")
+    
+    Box(
+        modifier = modifier
+            .width(52.dp)
+            .height(28.dp)
+            .clip(RoundedCornerShape(14.dp))
+            .background(if (checked) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Transparent)
+            .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(14.dp))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = { onCheckedChange(!checked) }
+            ),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Box(
+            modifier = Modifier
+                .offset(x = thumbOffset)
+                .size(20.dp)
+                .background(
+                    if (checked) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary,
+                    androidx.compose.foundation.shape.CircleShape
+                )
         )
     }
 }

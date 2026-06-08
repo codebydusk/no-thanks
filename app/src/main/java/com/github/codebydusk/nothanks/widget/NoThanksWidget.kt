@@ -301,9 +301,9 @@ class NoThanksWidget : GlanceAppWidget() {
         // OLED theme: Pure black bg, off-white text, dark grey nav, dark green accent (always dark)
         ExcuseRepository.THEME_OLED -> ThemeColors(
             background = ComposeColor(0xFF000000),
-            foreground = ComposeColor(0xFFDCDCDC),
+            foreground = ComposeColor(0xFFF7F7F9),
             navColor   = ComposeColor(0xFF555555),
-            accent     = ComposeColor(0xFF1B512D)
+            accent     = ComposeColor(0xFFCAFE48)
         )
 
         // System theme: use device's Material You dynamic colors on Android 12+
