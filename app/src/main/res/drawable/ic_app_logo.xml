@@ -11,10 +11,7 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Rounded background square (Dark Charcoal #1E1E24) -->
-    <path
-        android:fillColor="#FF1E1E24"
-        android:pathData="M18,0 H90 Q108,0 108,18 V90 Q108,108 90,108 H18 Q0,108 0,90 V18 Q0,0 18,0 Z"/>
+
 
     <!-- Badge circle (Golden Yellow #FFCB47) -->
     <path
