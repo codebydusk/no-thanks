@@ -290,12 +290,12 @@ class NoThanksWidget : GlanceAppWidget() {
             background = ComposeColor(0xFF1E1E24),
             foreground = ComposeColor(0xFFFFCB47),
             navColor   = ComposeColor(0xFFFFCB47),
-            accent     = ComposeColor(0xFFFFCB47)
+            accent     = ComposeColor(0xFFCD4631)
         ) else ThemeColors(
             background = ComposeColor(0xFFFFCB47),
             foreground = ComposeColor(0xFF1E1E24),
             navColor   = ComposeColor(0xFF1E1E24),
-            accent     = ComposeColor(0xFF1E1E24)
+            accent     = ComposeColor(0xFFCD4631)
         )
 
         // OLED theme: Pure black bg, off-white text, dark grey nav, dark green accent (always dark)
