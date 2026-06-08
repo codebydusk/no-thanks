@@ -76,6 +76,7 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
     val showPrevButton by repository.showPrevButtonFlow.collectAsState(initial = true)
     val includeCopyPrefix by repository.copyPrefixFlow.collectAsState(initial = false)
     val currentTextSize by repository.textSizeFlow.collectAsState(initial = ExcuseRepository.TEXT_SIZE_NORMAL)
+    val currentFontStyle by repository.fontStyleFlow.collectAsState(initial = ExcuseRepository.FONT_STYLE_MONOSPACE)
 
     val context = androidx.compose.ui.platform.LocalContext.current
 
@@ -160,6 +161,12 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                             }
                         )
                     }
+                    Text(
+                        text = "*Widget themes only apply to the home screen widget.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
                 }
             }
         }
@@ -208,6 +215,26 @@ fun SettingsScreen(repository: ExcuseRepository, modifier: Modifier = Modifier) 
                     onSelect = { value ->
                         scope.launch {
                             repository.updateSetting(ExcuseRepository.TEXT_SIZE_KEY, value)
+                            NoThanksWidget().updateAll(context)
+                        }
+                    }
+                )
+            }
+        }
+
+        // Font Style section
+        item {
+            SettingsSection(title = "Font Style") {
+                val fontStyleOptions = listOf(
+                    ExcuseRepository.FONT_STYLE_SYSTEM to "System Default",
+                    ExcuseRepository.FONT_STYLE_MONOSPACE to "Monospace"
+                )
+                SegmentedOptions(
+                    options = fontStyleOptions,
+                    selectedValue = currentFontStyle,
+                    onSelect = { value ->
+                        scope.launch {
+                            repository.updateSetting(ExcuseRepository.FONT_STYLE_KEY, value)
                             NoThanksWidget().updateAll(context)
                         }
                     }
@@ -351,26 +378,28 @@ fun SegmentedOptions(
     ) {
         options.forEach { (value, label) ->
             val isSelected = selectedValue == value
-            OutlinedButton(
+            Button(
                 onClick = { onSelect(value) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isSelected) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.surface
                 ),
                 border = BorderStroke(
                     1.dp,
                     if (isSelected) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.outlineVariant
-                )
+                ),
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
             ) {
                 Text(
                     text = label,
                     fontSize = 13.sp,
-                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-                    else MaterialTheme.colorScheme.onSurface
+                    fontWeight = FontWeight.Normal,
+                    color = if (isSelected) MaterialTheme.colorScheme.onPrimary
+                    else MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -379,20 +408,6 @@ fun SegmentedOptions(
 
 @Composable
 fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () -> Unit) {
-    // Resolve preview colors for the theme chip
-    val (bgColor, fgColor) = when (theme) {
-        ExcuseRepository.THEME_NOTHING -> {
-            androidx.compose.ui.graphics.Color(0xFF1B1B1D) to androidx.compose.ui.graphics.Color(0xFFD71921)
-        }
-        ExcuseRepository.THEME_GOLDEN -> {
-            androidx.compose.ui.graphics.Color(0xFF1E1E24) to androidx.compose.ui.graphics.Color(0xFFFFCB47)
-        }
-        else -> {
-            // System — use neutral M3 preview
-            androidx.compose.ui.graphics.Color(0xFF1C1B1F) to androidx.compose.ui.graphics.Color(0xFFE6E1E5)
-        }
-    }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -416,19 +431,5 @@ fun ThemeOptionRow(label: String, selected: Boolean, theme: String, onClick: () 
                 .weight(1f),
             style = MaterialTheme.typography.bodyLarge
         )
-        // Color preview chip
-        Row(
-            modifier = Modifier
-                .clip(RoundedCornerShape(6.dp))
-                .background(bgColor)
-                .padding(horizontal = 10.dp, vertical = 4.dp)
-        ) {
-            Text(
-                text = "No",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                color = fgColor
-            )
-        }
     }
 }

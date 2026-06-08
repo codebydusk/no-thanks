@@ -36,7 +36,7 @@ class ExcuseRepository(private val context: Context) {
         val SHOW_PREV_BUTTON_KEY = booleanPreferencesKey("show_prev_button")
         val COPY_PREFIX_KEY = booleanPreferencesKey("copy_prefix")
         val TEXT_SIZE_KEY = stringPreferencesKey("text_size")
-
+        val FONT_STYLE_KEY = stringPreferencesKey("font_style")
         // Dark mode values
         const val DARK_MODE_SYSTEM = "SYSTEM"
         const val DARK_MODE_LIGHT = "LIGHT"
@@ -60,6 +60,10 @@ class ExcuseRepository(private val context: Context) {
         const val TEXT_SIZE_SMALL = "SMALL"
         const val TEXT_SIZE_NORMAL = "NORMAL"
         const val TEXT_SIZE_LARGE = "LARGE"
+
+        // Font style values
+        const val FONT_STYLE_SYSTEM = "SYSTEM"
+        const val FONT_STYLE_MONOSPACE = "MONOSPACE"
 
         // Sarcastic fallback messages for API failure
         val FALLBACK_MESSAGES = listOf(
@@ -239,6 +243,7 @@ class ExcuseRepository(private val context: Context) {
     val showPrevButtonFlow: Flow<Boolean> = context.dataStore.data.map { it[SHOW_PREV_BUTTON_KEY] ?: true }
     val copyPrefixFlow: Flow<Boolean> = context.dataStore.data.map { it[COPY_PREFIX_KEY] ?: false }
     val textSizeFlow: Flow<String> = context.dataStore.data.map { it[TEXT_SIZE_KEY] ?: TEXT_SIZE_NORMAL }
+    val fontStyleFlow: Flow<String> = context.dataStore.data.map { it[FONT_STYLE_KEY] ?: FONT_STYLE_MONOSPACE }
 
     suspend fun updateSetting(key: Preferences.Key<*>, value: Any) {
         context.dataStore.edit { preferences ->
@@ -251,6 +256,7 @@ class ExcuseRepository(private val context: Context) {
                 SHOW_PREV_BUTTON_KEY -> preferences[SHOW_PREV_BUTTON_KEY] = value as Boolean
                 COPY_PREFIX_KEY -> preferences[COPY_PREFIX_KEY] = value as Boolean
                 TEXT_SIZE_KEY -> preferences[TEXT_SIZE_KEY] = value as String
+                FONT_STYLE_KEY -> preferences[FONT_STYLE_KEY] = value as String
             }
         }
     }

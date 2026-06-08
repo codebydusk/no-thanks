@@ -80,6 +80,7 @@ class NoThanksWidget : GlanceAppWidget() {
             val copyMechanism by repository.copyMechanismFlow.collectAsState(initial = ExcuseRepository.COPY_TAP)
             val showPrevButton by repository.showPrevButtonFlow.collectAsState(initial = true)
             val textSize by repository.textSizeFlow.collectAsState(initial = ExcuseRepository.TEXT_SIZE_NORMAL)
+            val fontStyle by repository.fontStyleFlow.collectAsState(initial = ExcuseRepository.FONT_STYLE_MONOSPACE)
             val includeCopyPrefix by repository.copyPrefixFlow.collectAsState(initial = false)
 
             val isDark = resolveDarkMode(darkModeSetting, LocalContext.current)
@@ -99,6 +100,7 @@ class NoThanksWidget : GlanceAppWidget() {
                 isExpanded = size.height >= SIZE_4x2.height,
                 showPrevButton = showPrevButton,
                 textSize = textSize,
+                fontStyle = fontStyle,
                 context = LocalContext.current
             )
         }
@@ -114,6 +116,7 @@ class NoThanksWidget : GlanceAppWidget() {
         isExpanded: Boolean,
         showPrevButton: Boolean,
         textSize: String,
+        fontStyle: String,
         context: Context
     ) {
         val themeColors = resolveThemeColors(theme, isDark, context)
@@ -148,8 +151,11 @@ class NoThanksWidget : GlanceAppWidget() {
             else -> FontWeight.Normal
         }
 
-        // Single clean sans-serif font for all themes
-        val fontFamily = FontFamily.SansSerif
+        // Use the selected font style
+        val fontFamily = when (fontStyle) {
+            ExcuseRepository.FONT_STYLE_MONOSPACE -> FontFamily.Monospace
+            else -> FontFamily.SansSerif
+        }
 
         // Pill (CORNER_ROUND) = 50dp → truly pill-shaped at typical widget heights
         // Rounded (CORNER_SQUARE) = 8dp → gentle rounding

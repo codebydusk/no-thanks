@@ -56,6 +56,7 @@ A minimal Android home screen widget that serves you random excuses to gracefull
 - **Widget Theme** — 3 themes: Nothing OS, Golden Silence, System
 - **Corner Style** — Pill / Rounded / Sharp
 - **Text Size** — Small / Normal / Large
+- **Font Style** — System Default / Monospace
 - **Copy Mechanism** — Tap text to copy, or show a dedicated copy button
 - **Copy Prefix** — Toggle whether "No, thanks!" is included when copying
 - **Navigation** — Toggle the previous (←) button on/off
@@ -117,6 +118,15 @@ Every contribution makes this app feel more like home for someone. Don't hesitat
 | **Large** | 125% | Enlarged text for better readability |
 
 > Text size scales proportionally across all themes while maintaining visual consistency.
+
+## Font Style
+
+| Style | Description |
+| --- | --- |
+| **System Default** | Uses your device's standard sans-serif font (e.g., Roboto on Pixel, SamsungOne on Galaxy) |
+| **Monospace** *(default)* | A typewriter-style fixed-width font that perfectly mimics the Nothing OS dot-matrix aesthetic |
+
+> Android widgets are strictly limited to system fonts. Setting this to Monospace ensures a clean, tech-inspired look on any device.
 
 ## Appearance Modes
 
